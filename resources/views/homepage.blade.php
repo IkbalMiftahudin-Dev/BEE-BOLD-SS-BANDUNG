@@ -20,11 +20,22 @@
         $img = fn($id) => "https://api.builder.io/api/v1/image/assets/TEMP/$id";
         $heroImg = $img('1a60366866c23e33f00ba54592976d7b5fc9b63d?width=2879');
         $logoImg = asset('images/logo-bbss.png');
+        $activeProgramsCount = $programsCount ?? $programs->count();
+        $experienceYears =
+            $yearsOfExperience ??
+            max(
+                1,
+                (int) floor(
+                    \Illuminate\Support\Carbon::create(2024, 5, 6, 0, 0, 0, 'Asia/Jakarta')->diffInYears(
+                        now('Asia/Jakarta'),
+                    ),
+                ),
+            );
         $stats = [
             ['500+', 'Siswa Aktif'],
-            ['6', 'Program Usia'],
+            [(string) $activeProgramsCount, 'Program Usia'],
             ['15+', 'Pelatih Berlisensi'],
-            ['2 Tahun', 'Pengalaman'],
+            [$experienceYears . ' Tahun', 'Pengalaman'],
         ];
         $marquee = [
             'Pelatihan Profesional',
@@ -39,28 +50,28 @@
 
     @include('partials.navbar')
 
-    {{-- Hero --}}
-    <section id="beranda" class="relative flex min-h-[1024px] flex-col justify-end overflow-hidden bg-[#001228]">
+    {{-- Hero (Full 100vh Viewport) --}}
+    <section id="beranda" class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-[#001228]">
         <img src="{{ $heroImg }}" alt="" class="absolute inset-0 size-full object-cover opacity-[.28]">
         <div class="absolute inset-0 bg-gradient-to-b from-[#001228]/60 via-[#001f40]/30 to-[#001228]/85"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-brand/90 to-transparent to-60%"></div>
         <div class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-gold to-sky"></div>
 
-        <div class="relative mx-auto flex w-full max-w-[1280px] flex-1 items-center justify-between px-6 pb-40 pt-40">
+        <div class="relative mx-auto flex w-full max-w-[1280px] flex-1 items-center justify-between px-6 pb-16 pt-28 sm:pb-20 sm:pt-32">
             <div class="max-w-[640px]">
                 <p class="font-inter text-xs font-medium uppercase tracking-[1.2px] text-sky">— Sekolah Sepak Bola
                     Bandung</p>
-                <h1 class="mt-4 font-montserrat font-black leading-[.98] tracking-[-2.2px]">
-                    <span class="block text-5xl text-white md:text-[56px]">SELAMAT DATANG DI</span>
-                    <span class="block text-6xl italic text-gold md:text-[77px]">BEE BOLD</span>
-                    <span class="block text-5xl text-white md:text-[72px]">SOCCER SCHOOL</span>
+                <h1 class="mt-3 font-montserrat font-black leading-[.98] tracking-[-2.2px] sm:mt-4">
+                    <span class="block text-4xl text-white sm:text-5xl lg:text-[52px] xl:text-[56px]">SELAMAT DATANG DI</span>
+                    <span class="block text-5xl italic text-gold sm:text-6xl lg:text-[70px] xl:text-[77px]">BEE BOLD</span>
+                    <span class="block text-4xl text-white sm:text-5xl lg:text-[64px] xl:text-[72px]">SOCCER SCHOOL</span>
                 </h1>
-                <p class="mt-6 max-w-xl text-lg leading-[1.625] text-white/70">Sekolah sepak bola di Bandung yang
+                <p class="mt-5 max-w-xl text-base leading-[1.625] text-white/70 sm:mt-6 sm:text-lg">Sekolah sepak bola di Bandung yang
                     membina bakat, mengasah kemampuan, dan membentuk karakter pemain muda untuk meraih prestasi di
                     lapangan.</p>
-                <div class="mt-8 flex flex-wrap gap-4">
+                <div class="mt-6 flex flex-wrap gap-3 sm:mt-8 sm:gap-4">
                     <a href="#daftar"
-                        class="flex min-h-12 items-center gap-3 rounded-xl bg-gold px-8 py-4 font-oswald text-lg font-bold tracking-wide text-brand shadow-[0_8px_32px_rgba(255,204,0,.4)]">
+                        class="flex min-h-12 items-center gap-3 rounded-xl bg-gold px-6 py-3.5 font-oswald text-base font-bold tracking-wide text-brand shadow-[0_8px_32px_rgba(255,204,0,.4)] sm:px-8 sm:py-4 sm:text-lg">
                         DAFTAR SEKARANG
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M14.16 13.33 17.49 10l-3.33-3.33M17.49 10H2.5" stroke="#036" stroke-width="2"
@@ -68,53 +79,56 @@
                         </svg>
                     </a>
                     <a href="#program"
-                        class="flex min-h-12 items-center rounded-xl border border-white/30 px-8 py-4 font-oswald text-lg font-semibold tracking-wide">LIHAT
+                        class="flex min-h-12 items-center rounded-xl border border-white/30 px-6 py-3.5 font-oswald text-base font-semibold tracking-wide sm:px-8 sm:py-4 sm:text-lg">LIHAT
                         PROGRAM</a>
                 </div>
             </div>
-            <div class="hidden translate-y-72 flex-col items-center lg:flex">
-                <div class="-rotate-6 text-center font-caveat text-4xl leading-[1.05]">
+            <div class="hidden flex-1 flex-col items-center justify-center lg:flex lg:-translate-y-20">
+                <div class="-rotate-6 text-center font-caveat text-4xl leading-[1.05] xl:text-5xl">
                     <p>More</p>
                     <p>Than Just</p>
                     <p>Football</p>
                 </div>
-                <div class="mt-1 h-[7px] w-[170px] -rotate-[4deg] rounded-md bg-gold"></div>
-            </div>
-        </div>
-
-        <div class="relative border-t border-white/10 bg-[#001228]/65 backdrop-blur-sm">
-            <div class="mx-auto grid max-w-[1312px] grid-cols-2 px-6 md:grid-cols-4 md:px-16">
-                @foreach ($stats as [$value, $label])
-                    <div class="border-white/10 px-6 py-8 text-center md:border-r md:last:border-r-0">
-                        <div class="font-montserrat text-4xl font-black tracking-[-.8px] text-gold md:text-[40px]">
-                            {{ $value }}</div>
-                        <div
-                            class="pt-1.5 font-montserrat text-[11px] font-semibold uppercase tracking-[1.1px] text-white/55">
-                            {{ $label }}</div>
-                    </div>
-                @endforeach
+                <div class="mt-1.5 h-[7px] w-[170px] -rotate-[4deg] rounded-md bg-gold xl:w-[195px]"></div>
             </div>
         </div>
     </section>
 
-    {{-- Marquee --}}
-    <div class="overflow-hidden bg-gold py-3">
-        <div class="flex w-max animate-[marquee_30s_linear_infinite] items-center gap-16 pl-6">
-            @for ($i = 0; $i < 3; $i++)
-                @foreach ($marquee as $m)
-                    <div class="flex items-center gap-8">
-                        <span
-                            class="font-oswald text-sm font-bold uppercase tracking-[1.4px] text-brand">{{ $m }}</span>
-                        <span class="text-xl text-brand/50">◆</span>
-                    </div>
-                @endforeach
-            @endfor
+    {{-- Statistik & Marquee (Terpisah dari Hero) --}}
+    <section aria-label="Statistik dan Keunggulan Bee Bold" class="relative z-10 border-t border-white/10 bg-[#050d1a]">
+        <div class="mx-auto grid max-w-[1312px] grid-cols-2 divide-y divide-white/10 px-4 sm:px-6 md:grid-cols-4 md:divide-x md:divide-y-0 md:px-16">
+            @foreach ($stats as [$value, $label])
+                <div class="px-4 py-6 text-center sm:px-6 md:py-8">
+                    <div class="font-montserrat text-3xl font-black tracking-[-.8px] text-gold sm:text-4xl md:text-[40px]">
+                        {{ $value }}</div>
+                    <div
+                        class="pt-1.5 font-montserrat text-[10px] font-semibold uppercase tracking-[1.1px] text-white/60 sm:text-[11px]">
+                        {{ $label }}</div>
+                </div>
+            @endforeach
         </div>
-    </div>
+
+        <div class="overflow-hidden bg-gold py-3.5 shadow-md">
+            <div class="flex w-max animate-[marquee_30s_linear_infinite] items-center gap-16 pl-6">
+                @for ($i = 0; $i < 3; $i++)
+                    @foreach ($marquee as $m)
+                        <div class="flex items-center gap-8">
+                            <span
+                                class="font-oswald text-sm font-bold uppercase tracking-[1.4px] text-brand">{{ $m }}</span>
+                            <span class="text-xl text-brand/50">◆</span>
+                        </div>
+                    @endforeach
+                @endfor
+            </div>
+        </div>
+    </section>
 
     {{-- Tentang --}}
-    <section id="tentang" class="relative overflow-hidden bg-gradient-to-b from-[#061020] via-[#002b5c] to-[#061020] px-6 py-24">
-        <div class="pointer-events-none absolute left-1/2 top-[38%] h-[520px] w-[960px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#004080]/45 blur-[130px]"></div>
+    <section id="tentang"
+        class="relative overflow-hidden bg-gradient-to-b from-[#061020] via-[#002b5c] to-[#061020] px-6 py-24">
+        <div
+            class="pointer-events-none absolute left-1/2 top-[38%] h-[520px] w-[960px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#004080]/45 blur-[130px]">
+        </div>
         <div class="relative mx-auto max-w-[1280px]">
             <div class="grid items-center gap-12 lg:grid-cols-[1fr_minmax(320px,460px)_280px] lg:items-start">
                 <div class="lg:pt-4">
@@ -126,13 +140,17 @@
                 </div>
 
                 <div class="relative mx-auto w-full max-w-[460px] -rotate-2 rounded-sm bg-white p-3 pb-10 shadow-2xl">
-                    <div class="pointer-events-none absolute -right-6 -top-3 z-10 h-7 w-24 rotate-[35deg] bg-gold shadow-md"></div>
+                    <div
+                        class="pointer-events-none absolute -right-6 -top-3 z-10 h-7 w-24 rotate-[35deg] bg-gold shadow-md">
+                    </div>
                     <img src="{{ $img('fdcf4ca5342f0ccc2a2c6d6e1ac9c475da09755d?width=1264') }}" alt="Tim Bee Bold"
                         class="aspect-[4/3] w-full object-cover">
                 </div>
 
-                <div class="mx-auto w-full max-w-[280px] rounded-2xl border border-white/5 bg-[#001428]/90 p-7 shadow-xl lg:mt-10">
-                    <img src="{{ $logoImg }}" alt="Logo Bee Bold Soccer School" class="mx-auto size-14 rounded-full object-contain shadow-[0_2px_12px_rgba(255,204,0,.25)]">
+                <div
+                    class="mx-auto w-full max-w-[280px] rounded-2xl border border-white/5 bg-[#001428]/90 p-7 shadow-xl lg:mt-10">
+                    <img src="{{ $logoImg }}" alt="Logo Bee Bold Soccer School"
+                        class="mx-auto size-14 rounded-full object-contain shadow-[0_2px_12px_rgba(255,204,0,.25)]">
                     <blockquote class="mt-6 text-sm italic leading-relaxed text-white/80">
                         “Disiplin hari ini, adalah kemenangan di masa depan.”
                     </blockquote>
@@ -140,19 +158,17 @@
                 </div>
             </div>
 
-            <div class="mt-16 rounded-2xl border border-white/5 bg-[#050d1a]/90 px-8 py-12 shadow-2xl backdrop-blur-sm md:px-14">
+            <div
+                class="mt-16 rounded-2xl border border-white/5 bg-[#050d1a]/90 px-8 py-12 shadow-2xl backdrop-blur-sm md:px-14">
                 <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                    @foreach ([
-                        ['Pelatihan Profesional', 'Program latihan terstruktur bersama pelatih berpengalaman.', 'logo-pelatihan.svg'],
-                        ['Pengembangan Karakter', 'Menanamkan nilai disiplin, kerja sama, dan sportivitas.', 'logo-pengembangan.svg'],
-                        ['Fasilitas Lengkap', 'Selain latihan dilengkapi dengan program psikologi, fisiologi, nutrisi, dan pengenalan latihan beban untuk usia tertentu.', 'logo-fasilitas.svg'],
-                        ['Kesempatan Berkompetisi', 'Mengikuti turnamen dan uji coba untuk mengasah mental bertanding.', 'logo-kesempatan.svg'],
-                    ] as [$t, $d, $icon])
+                    @foreach ([['Pelatihan Profesional', 'Program latihan terstruktur bersama pelatih berpengalaman.', 'logo-pelatihan.svg'], ['Pengembangan Karakter', 'Menanamkan nilai disiplin, kerja sama, dan sportivitas.', 'logo-pengembangan.svg'], ['Fasilitas Lengkap', 'Selain latihan dilengkapi dengan program psikologi, fisiologi, nutrisi, dan pengenalan latihan beban untuk usia tertentu.', 'logo-fasilitas.svg'], ['Kesempatan Berkompetisi', 'Mengikuti turnamen dan uji coba untuk mengasah mental bertanding.', 'logo-kesempatan.svg']] as [$t, $d, $icon])
                         <div>
                             <img src="{{ asset('images/' . $icon) }}" alt="{{ $t }}"
-                                class="mb-4 size-8 object-contain">
-                            <h3 class="font-inter text-sm font-bold leading-snug text-white">{{ $t }}</h3>
-                            <p class="mt-2 text-xs leading-relaxed text-white/50">{{ $d }}</p>
+                                class="mb-4 size-9 object-contain lg:mb-5 lg:size-11">
+                            <h3 class="font-inter text-base font-bold leading-snug text-white lg:text-lg">
+                                {{ $t }}</h3>
+                            <p class="mt-2 text-sm leading-relaxed text-white/65 lg:mt-2.5 lg:text-[15px]">
+                                {{ $d }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -163,16 +179,14 @@
                 <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold">Pendiri</p>
             </div>
             <div class="mt-6 grid gap-4 md:grid-cols-3">
-                @foreach ([
-                    ['Boy Jati Asmara', 'Direktur Pengembangan Bee Bold SS', 'Eks Persib'],
-                    ['Eka Ramdani', 'Direktur Teknik Bee Bold SS', 'Mantan Pemain Timnas Indonesia & Persib'],
-                    ['Gilang Jalu', 'Direktur PT Gikari Jaya Sentosa', 'Pengusaha sekaligus Pemerhati Sepak Bola'],
-                ] as [$n, $r, $sub])
+                @foreach ([['Boy Jati Asmara', 'Direktur Pengembangan Bee Bold SS', 'Eks Persib'], ['Eka Ramdani', 'Direktur Teknik Bee Bold SS', 'Mantan Pemain Timnas Indonesia & Persib'], ['Gilang Jalu', 'Direktur PT Gikari Jaya Sentosa', 'Pengusaha sekaligus Pemerhati Sepak Bola']] as [$n, $r, $sub])
                     <div
                         class="relative h-[320px] overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-brand to-navy-900">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#001428] via-[#001428]/40 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#001428] via-[#001428]/40 to-transparent">
+                        </div>
                         <div class="absolute bottom-0 p-6">
-                            <p class="font-oswald text-xl font-bold uppercase tracking-wide text-white">{{ $n }}</p>
+                            <p class="font-oswald text-xl font-bold uppercase tracking-wide text-white">
+                                {{ $n }}</p>
                             <p class="pt-0.5 text-xs font-medium text-gold">{{ $r }}</p>
                             <p class="pt-0.5 text-[11px] text-white/45">{{ $sub }}</p>
                         </div>
@@ -221,11 +235,12 @@
                             class="absolute left-4 top-4 rounded-full {{ $loop->odd ? 'bg-gold' : 'bg-sky' }} px-3 py-1 font-oswald text-xs font-bold tracking-[1.2px] text-brand">{{ $program->age_range }}</span>
                         <div class="absolute inset-x-0 bottom-0 p-6">
                             <h3 class="font-oswald text-2xl font-bold uppercase">{{ $program->title }}</h3>
-                            <p class="pt-2 text-sm leading-[1.625] text-white/60">{{ $program->coach_name }} • {{ $program->description }}</p>
+                            <p class="pt-2 text-sm leading-[1.625] text-white/60">{{ $program->coach_name }}{{ filled($program->description) ? ' • ' . $program->description : '' }}</p>
                         </div>
                     </div>
                 @empty
-                    <p class="w-full py-16 text-center text-base text-white/50">Program latihan akan segera diumumkan.</p>
+                    <p class="w-full py-16 text-center text-base text-white/50">Program latihan akan segera diumumkan.
+                    </p>
                 @endforelse
             </div>
         </div>
@@ -248,42 +263,43 @@
                 </a>
             </div>
             @if ($featuredNews)
-            <div class="mt-14 grid gap-4 lg:grid-cols-2">
-                <a href="{{ route('berita.show', $featuredNews->slug) }}"
-                    class="group relative block min-h-[480px] overflow-hidden rounded-2xl bg-[#001A33]">
-                    <img src="{{ $featuredNews->thumbnail_url }}" alt="{{ $featuredNews->title }}"
-                        class="absolute inset-0 size-full object-cover opacity-70 transition duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#001428] via-[#001428]/50 to-transparent">
-                    </div>
-                    <x-category-badge :slug="$featuredNews->category->slug"
-                        class="absolute left-4 top-[18px] px-3 py-1 text-xs font-bold">{{ $featuredNews->category->name }}</x-category-badge>
-                    <div class="absolute inset-x-0 bottom-0 p-8">
-                        <p class="text-xs text-white/40">{{ $featuredNews->published_date_label }}</p>
-                        <h3
-                            class="pt-3 font-oswald text-3xl font-bold uppercase leading-tight transition group-hover:text-gold">
-                            {{ $featuredNews->title }}</h3>
-                        <p class="pt-3 text-sm leading-[1.625] text-white/60">{{ $featuredNews->lead_paragraph }}</p>
-                    </div>
-                </a>
-                <div class="flex flex-col gap-4">
-                    @foreach ($sideNews as $item)
-                        <a href="{{ route('berita.show', $item->slug) }}"
-                            class="group flex min-h-36 overflow-hidden rounded-2xl bg-[#001A33] transition hover:ring-1 hover:ring-sky/30">
-                            <img src="{{ $item->thumbnail_url }}" alt="{{ $item->title }}" loading="lazy"
-                                class="w-32 shrink-0 object-cover transition duration-500 group-hover:scale-105 sm:w-40">
-                            <div class="flex flex-1 flex-col justify-center px-5 py-4">
-                                <div class="pb-2"><span
-                                        class="rounded bg-sky/15 px-2 py-0.5 text-xs font-medium text-sky">{{ $item->category->name }}</span>
+                <div class="mt-14 grid gap-4 lg:grid-cols-2">
+                    <a href="{{ route('berita.show', $featuredNews->slug) }}"
+                        class="group relative block min-h-[480px] overflow-hidden rounded-2xl bg-[#001A33]">
+                        <img src="{{ $featuredNews->thumbnail_url }}" alt="{{ $featuredNews->title }}"
+                            class="absolute inset-0 size-full object-cover opacity-70 transition duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#001428] via-[#001428]/50 to-transparent">
+                        </div>
+                        <x-category-badge :slug="$featuredNews->category->slug"
+                            class="absolute left-4 top-[18px] px-3 py-1 text-xs font-bold">{{ $featuredNews->category->name }}</x-category-badge>
+                        <div class="absolute inset-x-0 bottom-0 p-8">
+                            <p class="text-xs text-white/40">{{ $featuredNews->published_date_label }}</p>
+                            <h3
+                                class="pt-3 font-oswald text-3xl font-bold uppercase leading-tight transition group-hover:text-gold">
+                                {{ $featuredNews->title }}</h3>
+                            <p class="pt-3 text-sm leading-[1.625] text-white/60">{{ $featuredNews->lead_paragraph }}
+                            </p>
+                        </div>
+                    </a>
+                    <div class="flex flex-col gap-4">
+                        @foreach ($sideNews as $item)
+                            <a href="{{ route('berita.show', $item->slug) }}"
+                                class="group flex min-h-36 overflow-hidden rounded-2xl bg-[#001A33] transition hover:ring-1 hover:ring-sky/30">
+                                <img src="{{ $item->thumbnail_url }}" alt="{{ $item->title }}" loading="lazy"
+                                    class="w-32 shrink-0 object-cover transition duration-500 group-hover:scale-105 sm:w-40">
+                                <div class="flex flex-1 flex-col justify-center px-5 py-4">
+                                    <div class="pb-2"><span
+                                            class="rounded bg-sky/15 px-2 py-0.5 text-xs font-medium text-sky">{{ $item->category->name }}</span>
+                                    </div>
+                                    <h3
+                                        class="font-oswald text-lg font-bold uppercase leading-snug transition group-hover:text-gold">
+                                        {{ $item->title }}</h3>
+                                    <p class="pt-1 text-xs text-white/40">{{ $item->published_date_label }}</p>
                                 </div>
-                                <h3
-                                    class="font-oswald text-lg font-bold uppercase leading-snug transition group-hover:text-gold">
-                                    {{ $item->title }}</h3>
-                                <p class="pt-1 text-xs text-white/40">{{ $item->published_date_label }}</p>
-                            </div>
-                        </a>
-                    @endforeach
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
             @else
                 <p class="mt-14 py-16 text-center text-base text-white/50">Belum ada berita yang dipublikasikan.</p>
             @endif
@@ -322,7 +338,8 @@
                     @foreach ($dayData['items'] as $schedule)
                         <div
                             class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-white/[.08] p-5 backdrop-blur-xl sm:flex-row sm:items-center">
-                            <div class="min-w-[160px] font-oswald text-lg font-bold text-gold">{{ $schedule->time_slot }}
+                            <div class="min-w-[160px] font-oswald text-lg font-bold text-gold">
+                                {{ $schedule->time_slot }}
                             </div>
                             <div class="flex-1">
                                 <div class="flex flex-wrap items-center gap-2.5">
@@ -372,18 +389,21 @@
             @if ($highlightedGalleries->isNotEmpty())
                 <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach ($highlightedGalleries as $photo)
-                        <button type="button"
-                            data-gallery-item="{{ $photo->image_url }}"
-                            data-gallery-title="{{ $photo->title }}"
-                            data-gallery-caption="{{ $photo->caption }}"
+                        <button type="button" data-gallery-item="{{ $photo->image_url }}"
+                            data-gallery-title="{{ $photo->title }}" data-gallery-caption="{{ $photo->caption }}"
                             class="group relative h-[260px] w-full cursor-pointer overflow-hidden rounded-2xl text-left focus:outline-none">
                             <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy"
                                 class="size-full object-cover transition duration-500 group-hover:scale-105">
-                            <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100"></div>
-                            <div class="absolute inset-x-0 bottom-0 p-5 opacity-0 transition duration-300 group-hover:opacity-100">
-                                <p class="font-oswald text-base font-bold uppercase tracking-wide text-white">{{ $photo->title }}</p>
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100">
+                            </div>
+                            <div
+                                class="absolute inset-x-0 bottom-0 p-5 opacity-0 transition duration-300 group-hover:opacity-100">
+                                <p class="font-oswald text-base font-bold uppercase tracking-wide text-white">
+                                    {{ $photo->title }}</p>
                                 @if ($photo->caption)
-                                    <p class="line-clamp-2 pt-1 text-xs leading-relaxed text-white/70">{{ $photo->caption }}</p>
+                                    <p class="line-clamp-2 pt-1 text-xs leading-relaxed text-white/70">
+                                        {{ $photo->caption }}</p>
                                 @endif
                             </div>
                         </button>
@@ -505,8 +525,8 @@
                     @foreach ([['name', 'Nama Lengkap Calon Pemain', 'text'], ['age', 'Usia', 'number'], ['parent', 'Nama Orang Tua / Wali', 'text'], ['phone', 'Nomor WhatsApp', 'tel']] as [$name, $label, $type])
                         <label class="block">
                             <span class="text-xs text-white/50">{{ $label }}</span>
-                            <input name="{{ $name }}" type="{{ $type }}" value="{{ old($name) }}"
-                                @if ($name === 'age') min="7" max="20" @endif
+                            <input name="{{ $name }}" type="{{ $type }}"
+                                value="{{ old($name) }}" @if ($name === 'age') min="7" max="20" @endif
                                 @if ($name === 'phone') inputmode="numeric" pattern="[0-9]+" @endif required
                                 class="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-gold">
                             @error($name)

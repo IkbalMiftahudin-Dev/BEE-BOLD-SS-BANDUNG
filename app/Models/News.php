@@ -55,14 +55,12 @@ class News extends Model
     }
 
     /**
-     * Only articles that are published and whose publish date has arrived are public.
+     * Any article marked as published in the dashboard is immediately visible on the public site.
      */
     #[Scope]
     protected function published(Builder $query): void
     {
-        $query->where('is_published', true)
-            ->whereNotNull('published_at')
-            ->where('published_at', '<=', now());
+        $query->where('is_published', true);
     }
 
     #[Scope]

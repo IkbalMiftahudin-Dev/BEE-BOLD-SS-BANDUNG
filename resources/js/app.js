@@ -245,3 +245,25 @@ if (passwordInput && passwordToggle) {
         passwordToggle.setAttribute('aria-label', isPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
     });
 }
+
+const dashSidebar = document.querySelector('[data-dash-sidebar]');
+const dashBackdrop = document.querySelector('[data-dash-backdrop]');
+const dashToggle = document.querySelector('[data-dash-toggle]');
+const dashClose = document.querySelector('[data-dash-close]');
+
+if (dashSidebar && dashBackdrop) {
+    const setDashDrawer = (open) => {
+        dashSidebar.classList.toggle('-translate-x-full', !open);
+        dashBackdrop.classList.toggle('hidden', !open);
+    };
+
+    dashToggle?.addEventListener('click', () => setDashDrawer(true));
+    dashClose?.addEventListener('click', () => setDashDrawer(false));
+    dashBackdrop.addEventListener('click', () => setDashDrawer(false));
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            setDashDrawer(false);
+        }
+    });
+}

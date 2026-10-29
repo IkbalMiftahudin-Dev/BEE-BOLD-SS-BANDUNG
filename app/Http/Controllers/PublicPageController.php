@@ -40,16 +40,23 @@ class PublicPageController extends Controller
             ->get();
 
         $fees = RegistrationFee::query()->active()->get();
+        $programs = AgeProgram::query()->active()->get();
+        $yearsOfExperience = max(1, (int) floor(
+            \Illuminate\Support\Carbon::create(2024, 5, 6, 0, 0, 0, 'Asia/Jakarta')
+                ->diffInYears(now('Asia/Jakarta'))
+        ));
 
         return view('homepage', [
-            'programs' => AgeProgram::query()->active()->get(),
+            'programs' => $programs,
+            'programsCount' => $programs->count(),
+            'yearsOfExperience' => $yearsOfExperience,
             'schedulesByDay' => $this->schedulesByDay(),
             'featuredNews' => $featuredNews,
             'sideNews' => $sideNews,
             'highlightedGalleries' => Gallery::query()
                 ->where('is_highlighted_on_home', true)
-                ->orderByDesc('created_at')
-                ->orderBy('id')
+                ->orderByDesc('updated_at')
+                ->orderByDesc('id')
                 ->limit(self::HOME_GALLERY_LIMIT)
                 ->get(),
             'faqs' => Faq::query()->active()->get(),
@@ -123,8 +130,7 @@ class PublicPageController extends Controller
     {
         return view('galeri', [
             'galleries' => Gallery::query()
-                ->orderByDesc('created_at')
-                ->orderBy('id')
+                ->orderByDesc('id')
                 ->paginate(self::GALLERY_PER_PAGE),
         ]);
     }
