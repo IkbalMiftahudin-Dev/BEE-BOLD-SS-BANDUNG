@@ -229,3 +229,19 @@ if (galleryModal && galleryImg) {
         }
     });
 }
+
+const passwordInput = document.querySelector('[data-password-input]');
+const passwordToggle = document.querySelector('[data-password-toggle]');
+
+if (passwordInput && passwordToggle) {
+    const eyeOpen = passwordToggle.querySelector('[data-eye-open]');
+    const eyeClosed = passwordToggle.querySelector('[data-eye-closed]');
+
+    passwordToggle.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        eyeOpen?.classList.toggle('hidden', isPassword);
+        eyeClosed?.classList.toggle('hidden', !isPassword);
+        passwordToggle.setAttribute('aria-label', isPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+    });
+}
