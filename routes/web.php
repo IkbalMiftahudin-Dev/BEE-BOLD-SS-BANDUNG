@@ -1,31 +1,18 @@
 <?php
 
+use App\Http\Controllers\PublicPageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('homepage', [
-        'news' => require resource_path('data/news.php'),
-    ]);
-})->name('home');
+Route::controller(PublicPageController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('/berita', 'allNews')->name('berita.index');
+    Route::get('/berita/{slug}', 'showNews')
+        ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+        ->name('berita.show');
+    Route::get('/galeri', 'allGalleries')->name('galeri.index');
 
-Route::get('/berita', function () {
-    return view('berita', [
-        'news' => require resource_path('data/news.php'),
-    ]);
-})->name('berita.index');
-
-Route::get('/berita/{slug}', function (string $slug) {
-    $news = collect(require resource_path('data/news.php'));
-    $article = $news->firstWhere('slug', $slug);
-    abort_unless($article, 404);
-
-    return view('berita-detail', [
-        'article' => $article,
-        'related' => $news->where('slug', '!=', $slug)->values(),
-        'total' => $news->count(),
-    ]);
-})->name('berita.show');
-
-Route::get('/galeri', function () {
-    return view('galeri');
-})->name('galeri.index');
+    // Throttled to limit automated abuse of the public registration endpoint.
+    Route::post('/daftar/whatsapp', 'redirectWhatsAppRegistration')
+        ->middleware('throttle:10,1')
+        ->name('registration.whatsapp');
+});

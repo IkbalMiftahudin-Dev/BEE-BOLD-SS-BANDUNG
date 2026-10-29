@@ -33,126 +33,8 @@
             'Kurikulum Terstruktur',
             'Pelatih Berlisensi',
         ];
-        $programs = [
-            [
-                'U-7 – U-9',
-                'Grassroot (U7 – U9)',
-                'Coach Iwan • Pengenalan & teknik dasar',
-                'bg-gold',
-                '99a8ab9d1ae26e0c798bad520b970b46c230f5fc?width=616',
-            ],
-            [
-                'U-10 – U-12',
-                'Grassroot (U10 – U12)',
-                'Coach Asep • Penguatan teknik & koordinasi',
-                'bg-sky',
-                '526a306a7a65c484546dcd4f6bfdfec24f447542?width=616',
-            ],
-            [
-                'U-13',
-                'Youth (U13)',
-                'Coach Viali & Coach Barte • Transisi taktik',
-                'bg-gold',
-                '99a8ab9d1ae26e0c798bad520b970b46c230f5fc?width=616',
-            ],
-            [
-                'U-14',
-                'Youth (U14)',
-                'Coach Vian • Pemantapan taktik & fisik',
-                'bg-sky',
-                '526a306a7a65c484546dcd4f6bfdfec24f447542?width=616',
-            ],
-            [
-                'U-15 – U-16',
-                'Youth (U15 – U16)',
-                'Coach Firman • Persiapan kompetisi',
-                'bg-gold',
-                '99a8ab9d1ae26e0c798bad520b970b46c230f5fc?width=616',
-            ],
-            [
-                'U-17 – U-20',
-                'Youth (U17 – U20)',
-                'Coach Viali • Pematangan performa elit',
-                'bg-sky',
-                '526a306a7a65c484546dcd4f6bfdfec24f447542?width=616',
-            ],
-        ];
-        $grassrootSchedule = [
-            ['16:00 – 18:00', 'U-7 – U-9', 'Grassroot', 'Coach Iwan'],
-            ['16:00 – 18:00', 'U-10 – U-12', 'Grassroot', 'Coach Asep'],
-        ];
-        $youthSchedule = [
-            ['16:00 – 18:00', 'U-13', 'Youth', 'Coach Viali & Coach Barte'],
-            ['16:00 – 18:00', 'U-14', 'Youth', 'Coach Vian'],
-            ['16:00 – 18:00', 'U-15 – U-16', 'Youth', 'Coach Firman'],
-            ['16:00 – 18:00', 'U-17 – U-20', 'Youth', 'Coach Viali'],
-        ];
-        $schedulesByDay = [
-            'senin' => [
-                'label' => 'Senin',
-                'subtitle' => 'Latihan Gabungan — Grassroot (U7–U12) & Youth (U13–U20)',
-                'items' => array_merge($grassrootSchedule, $youthSchedule),
-            ],
-            'selasa' => [
-                'label' => 'Selasa',
-                'subtitle' => 'Khusus Youth (U13–U20)',
-                'items' => $youthSchedule,
-            ],
-            'rabu' => [
-                'label' => 'Rabu',
-                'subtitle' => 'Khusus Grassroot (U7–U12)',
-                'items' => $grassrootSchedule,
-            ],
-            'kamis' => [
-                'label' => 'Kamis',
-                'subtitle' => 'Latihan Gabungan — Grassroot (U7–U12) & Youth (U13–U20)',
-                'items' => array_merge($grassrootSchedule, $youthSchedule),
-            ],
-            'akhir-pekan' => [
-                'label' => 'Sabtu / Minggu (Try Out Match / On Schedule)',
-                'subtitle' => 'Jadwal Uji Coba (Try Out Match) / Turnamen — Lokasi Tentatif',
-                'items' => [
-                    ['On Schedule', 'Grassroot (U-7 – U-12)', 'Try Out Match / Turnamen', 'Coach Iwan & Coach Asep'],
-                    [
-                        'On Schedule',
-                        'Youth (U-13 – U-20)',
-                        'Try Out Match / Turnamen',
-                        'Coach Viali, Coach Barte, Coach Vian & Coach Firman',
-                    ],
-                ],
-            ],
-        ];
-        $faqs = [
-            [
-                'Usia berapa anak bisa mulai bergabung?',
-                'Program kami terbuka untuk anak usia 5–20 tahun. Setelah mendaftar, peserta akan melalui proses klasifikasi terlebih dahulu. Peserta yang sudah berpengalaman akan bergabung dengan Tim 1 (Kelas Elite), sedangkan peserta baru akan masuk ke Tim 2 (Kelas Pengenalan).',
-            ],
-            [
-                'Apakah anak harus sudah mahir bermain sepak bola?',
-                'Tidak. Peserta baru akan masuk kelas pengenalan dan dibimbing dari dasar.',
-            ],
-            [
-                'Di mana dan kapan latihan dilaksanakan?',
-                'Latihan dilaksanakan di Lapangan UIN 2, Kota Bandung. Lihat jadwal lengkap di bagian Jadwal Mingguan.',
-            ],
-            [
-                'Apa saja yang termasuk dalam biaya pendaftaran?',
-                'Biaya pendaftaran mencakup administrasi dan perlengkapan awal peserta.',
-            ],
-            [
-                'Apakah tersedia sesi trial sebelum mendaftar?',
-                'Ya, hubungi kami via WhatsApp untuk menjadwalkan sesi trial.',
-            ],
-            [
-                'Bagaimana sistem keamanan dan pendampingan pemain?',
-                'Setiap sesi didampingi pelatih berlisensi dan tim pendamping di lapangan.',
-            ],
-        ];
         $plus =
             '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3.33v9.33M3.33 8h9.33" stroke="currentColor" stroke-width="1.33" stroke-linecap="round"/></svg>';
-        $newsList = $news ?? (require resource_path('data/news.php'));
-        $featuredNews = $newsList[0];
-        $sideNews = array_slice($newsList, 1, 3);
     @endphp
 
     @include('partials.navbar')
@@ -330,18 +212,21 @@
             @endif
             <div data-program-slider
                 class="no-scrollbar {{ count($programs) > 4 ? 'mt-4' : 'mt-14' }} flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4">
-                @foreach ($programs as $i => [$badge, $title, $desc, $badgeBg, $src])
+                @forelse ($programs as $program)
                     <div data-program-card
-                        class="relative h-[480px] w-[85%] shrink-0 snap-start overflow-hidden rounded-2xl bg-cover bg-center sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-3rem)/4)] {{ $i % 2 ? 'lg:mt-8' : '' }}"
-                        style="background-image: linear-gradient(0deg,#001428 0%,rgba(0,20,40,.4) 50%,rgba(0,20,40,0) 100%), url('{{ $img($src) }}')">
+                        class="relative h-[480px] w-[85%] shrink-0 snap-start overflow-hidden rounded-2xl bg-navy-900 bg-cover bg-center sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-3rem)/4)] {{ $loop->even ? 'lg:mt-8' : '' }}"
+                        style="background-image: linear-gradient(0deg,#001428 0%,rgba(0,20,40,.4) 50%,rgba(0,20,40,0) 100%), url('{{ addcslashes((string) $program->image_url, "'\\\r\n()") }}')">
+                        {{-- Badge colour alternates in the view layer; there is no badge_color column. --}}
                         <span
-                            class="absolute left-4 top-4 rounded-full {{ $badgeBg }} px-3 py-1 font-oswald text-xs font-bold tracking-[1.2px] text-brand">{{ $badge }}</span>
+                            class="absolute left-4 top-4 rounded-full {{ $loop->odd ? 'bg-gold' : 'bg-sky' }} px-3 py-1 font-oswald text-xs font-bold tracking-[1.2px] text-brand">{{ $program->age_range }}</span>
                         <div class="absolute inset-x-0 bottom-0 p-6">
-                            <h3 class="font-oswald text-2xl font-bold uppercase">{{ $title }}</h3>
-                            <p class="pt-2 text-sm leading-[1.625] text-white/60">{{ $desc }}</p>
+                            <h3 class="font-oswald text-2xl font-bold uppercase">{{ $program->title }}</h3>
+                            <p class="pt-2 text-sm leading-[1.625] text-white/60">{{ $program->coach_name }} • {{ $program->description }}</p>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p class="w-full py-16 text-center text-base text-white/50">Program latihan akan segera diumumkan.</p>
+                @endforelse
             </div>
         </div>
     </section>
@@ -362,42 +247,46 @@
                     </svg>
                 </a>
             </div>
+            @if ($featuredNews)
             <div class="mt-14 grid gap-4 lg:grid-cols-2">
-                <a href="{{ route('berita.show', $featuredNews['slug']) }}"
+                <a href="{{ route('berita.show', $featuredNews->slug) }}"
                     class="group relative block min-h-[480px] overflow-hidden rounded-2xl bg-[#001A33]">
-                    <img src="{{ $featuredNews['image'] }}" alt="{{ $featuredNews['title'] }}"
+                    <img src="{{ $featuredNews->thumbnail_url }}" alt="{{ $featuredNews->title }}"
                         class="absolute inset-0 size-full object-cover opacity-70 transition duration-500 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#001428] via-[#001428]/50 to-transparent">
                     </div>
-                    <span
-                        class="absolute left-4 top-[18px] rounded-full {{ $featuredNews['color'] }} px-3 py-1 text-xs font-bold text-brand">{{ $featuredNews['category'] }}</span>
+                    <x-category-badge :slug="$featuredNews->category->slug"
+                        class="absolute left-4 top-[18px] px-3 py-1 text-xs font-bold">{{ $featuredNews->category->name }}</x-category-badge>
                     <div class="absolute inset-x-0 bottom-0 p-8">
-                        <p class="text-xs text-white/40">{{ $featuredNews['date'] }}</p>
+                        <p class="text-xs text-white/40">{{ $featuredNews->published_date_label }}</p>
                         <h3
                             class="pt-3 font-oswald text-3xl font-bold uppercase leading-tight transition group-hover:text-gold">
-                            {{ $featuredNews['title'] }}</h3>
-                        <p class="pt-3 text-sm leading-[1.625] text-white/60">{{ $featuredNews['excerpt'] }}</p>
+                            {{ $featuredNews->title }}</h3>
+                        <p class="pt-3 text-sm leading-[1.625] text-white/60">{{ $featuredNews->lead_paragraph }}</p>
                     </div>
                 </a>
                 <div class="flex flex-col gap-4">
                     @foreach ($sideNews as $item)
-                        <a href="{{ route('berita.show', $item['slug']) }}"
+                        <a href="{{ route('berita.show', $item->slug) }}"
                             class="group flex min-h-36 overflow-hidden rounded-2xl bg-[#001A33] transition hover:ring-1 hover:ring-sky/30">
-                            <img src="{{ $item['image'] }}" alt="{{ $item['title'] }}"
+                            <img src="{{ $item->thumbnail_url }}" alt="{{ $item->title }}" loading="lazy"
                                 class="w-32 shrink-0 object-cover transition duration-500 group-hover:scale-105 sm:w-40">
                             <div class="flex flex-1 flex-col justify-center px-5 py-4">
                                 <div class="pb-2"><span
-                                        class="rounded bg-sky/15 px-2 py-0.5 text-xs font-medium text-sky">{{ $item['category'] }}</span>
+                                        class="rounded bg-sky/15 px-2 py-0.5 text-xs font-medium text-sky">{{ $item->category->name }}</span>
                                 </div>
                                 <h3
                                     class="font-oswald text-lg font-bold uppercase leading-snug transition group-hover:text-gold">
-                                    {{ $item['title'] }}</h3>
-                                <p class="pt-1 text-xs text-white/40">{{ $item['date'] }}</p>
+                                    {{ $item->title }}</h3>
+                                <p class="pt-1 text-xs text-white/40">{{ $item->published_date_label }}</p>
                             </div>
                         </a>
                     @endforeach
                 </div>
             </div>
+            @else
+                <p class="mt-14 py-16 text-center text-base text-white/50">Belum ada berita yang dipublikasikan.</p>
+            @endif
         </div>
     </section>
 
@@ -417,36 +306,38 @@
             </div>
 
             <div class="flex flex-wrap gap-2 pt-14" data-tabs>
-                @foreach ($schedulesByDay as $dayKey => $dayData)
-                    <button type="button" data-tab="{{ $dayKey }}"
+                @foreach ($schedulesByDay as $dayData)
+                    <button type="button" data-tab="{{ $dayData['key'] }}"
                         class="min-h-12 rounded-xl border px-5 py-2.5 font-oswald text-sm font-semibold tracking-[.35px] transition {{ $loop->first ? 'border-gold bg-gold text-brand' : 'border-white/10 bg-white/5 text-white/60' }}">{{ $dayData['label'] }}</button>
                 @endforeach
             </div>
 
-            @foreach ($schedulesByDay as $dayKey => $dayData)
-                <div data-schedule-panel="{{ $dayKey }}"
+            @forelse ($schedulesByDay as $dayData)
+                <div data-schedule-panel="{{ $dayData['key'] }}"
                     class="mt-8 flex flex-col gap-3 {{ $loop->first ? '' : 'hidden' }}">
                     <div class="mb-1 flex items-center gap-2 text-xs font-medium uppercase tracking-[1px] text-sky">
                         <span class="size-2 rounded-full bg-gold"></span>
                         <span>{{ $dayData['subtitle'] }}</span>
                     </div>
-                    @foreach ($dayData['items'] as [$time, $group, $category, $coach])
+                    @foreach ($dayData['items'] as $schedule)
                         <div
                             class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-white/[.08] p-5 backdrop-blur-xl sm:flex-row sm:items-center">
-                            <div class="min-w-[160px] font-oswald text-lg font-bold text-gold">{{ $time }}
+                            <div class="min-w-[160px] font-oswald text-lg font-bold text-gold">{{ $schedule->time_slot }}
                             </div>
                             <div class="flex-1">
                                 <div class="flex flex-wrap items-center gap-2.5">
-                                    <p class="font-oswald text-lg font-bold">{{ $group }}</p>
+                                    <p class="font-oswald text-lg font-bold">{{ $schedule->target_category }}</p>
                                     <span
-                                        class="rounded-full {{ $category === 'Grassroot' ? 'bg-gold/20 text-gold' : ($category === 'Youth' ? 'bg-sky/20 text-sky' : 'bg-white/15 text-white') }} px-2.5 py-0.5 text-xs font-semibold">{{ $category }}</span>
+                                        class="rounded-full {{ $schedule->activity_type === 'Grassroot' ? 'bg-gold/20 text-gold' : ($schedule->activity_type === 'Youth' ? 'bg-sky/20 text-sky' : 'bg-white/15 text-white') }} px-2.5 py-0.5 text-xs font-semibold">{{ $schedule->activity_type }}</span>
                                 </div>
-                                <p class="pt-1 text-sm font-medium text-white/80">{{ $coach }}</p>
+                                <p class="pt-1 text-sm font-medium text-white/80">{{ $schedule->coach_name }}</p>
                             </div>
                         </div>
                     @endforeach
                 </div>
-            @endforeach
+            @empty
+                <p class="mt-8 py-10 text-center text-base text-white/50">Jadwal latihan akan segera diumumkan.</p>
+            @endforelse
 
             <div
                 class="mt-3 flex items-center gap-4 rounded-xl border border-white/10 bg-white/[.08] p-5 text-sm text-white/60">
@@ -478,10 +369,29 @@
                     </svg>
                 </a>
             </div>
-            <a href="{{ route('galeri.index') }}" class="mt-14 block overflow-hidden rounded-2xl">
-                <img src="{{ $img('639c2f6e069658d6170cc04096087a21e5057382?width=2560') }}" alt="Galeri Bee Bold"
-                    class="aspect-[107/54] w-full object-cover transition duration-500 hover:scale-[1.02]">
-            </a>
+            @if ($highlightedGalleries->isNotEmpty())
+                <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach ($highlightedGalleries as $photo)
+                        <button type="button"
+                            data-gallery-item="{{ $photo->image_url }}"
+                            data-gallery-title="{{ $photo->title }}"
+                            data-gallery-caption="{{ $photo->caption }}"
+                            class="group relative h-[260px] w-full cursor-pointer overflow-hidden rounded-2xl text-left focus:outline-none">
+                            <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy"
+                                class="size-full object-cover transition duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100"></div>
+                            <div class="absolute inset-x-0 bottom-0 p-5 opacity-0 transition duration-300 group-hover:opacity-100">
+                                <p class="font-oswald text-base font-bold uppercase tracking-wide text-white">{{ $photo->title }}</p>
+                                @if ($photo->caption)
+                                    <p class="line-clamp-2 pt-1 text-xs leading-relaxed text-white/70">{{ $photo->caption }}</p>
+                                @endif
+                            </div>
+                        </button>
+                    @endforeach
+                </div>
+            @else
+                <p class="mt-14 py-16 text-center text-base text-white/50">Belum ada dokumentasi galeri.</p>
+            @endif
         </div>
     </section>
 
@@ -502,7 +412,7 @@
             </div>
             <div class="lg:col-span-7">
                 <div class="border-t border-white/10" data-faq>
-                    @foreach ($faqs as $i => [$q, $a])
+                    @foreach ($faqs as $i => $faq)
                         <div class="border-b border-white/10">
                             <button type="button" data-faq-btn
                                 class="flex min-h-[72px] w-full items-center gap-5 py-6 text-left">
@@ -510,12 +420,12 @@
                                     data-faq-num>{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
                                 <span
                                     class="flex-1 font-oswald text-xl font-semibold uppercase tracking-[.5px] text-white/70"
-                                    data-faq-q>{{ $q }}</span>
+                                    data-faq-q>{{ $faq->question }}</span>
                                 <span data-faq-icon
                                     class="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/50 transition-transform">{!! $plus !!}</span>
                             </button>
                             <div data-faq-a class="hidden pb-7 pl-10 pr-16 text-[15px] leading-[26px] text-white/55">
-                                {{ $a }}</div>
+                                {{ $faq->answer }}</div>
                         </div>
                     @endforeach
                 </div>
@@ -540,21 +450,25 @@
                         class="text-gold">Bersama</span> Kami</h2>
 
                 <div class="py-8">
-                    <p class="text-xs uppercase tracking-[.3px] text-white/40">Biaya Pendaftaran</p>
-                    <p class="font-semibold">Rp 2.000.000 (sekali)</p>
-                    <hr class="mt-2 border-white/10">
-                    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-12">
-                        <div>
-                            <p class="text-xs uppercase tracking-[.3px] text-white/40">Biaya Bulanan Grassroot (U7 -
-                                U12)</p>
-                            <p class="pt-1 font-semibold">Mulai Rp 300.000 / bulan</p>
+                    @foreach ($oneTimeFees as $fee)
+                        <div class="{{ $loop->first ? '' : 'mt-4' }}">
+                            <p class="text-xs uppercase tracking-[.3px] text-white/40">{{ $fee->label }}</p>
+                            <p class="font-semibold">{{ $fee->amount_text }}</p>
                         </div>
-                        <div>
-                            <p class="text-xs uppercase tracking-[.3px] text-white/40">Biaya Bulanan Youth (U13 - U20)
-                            </p>
-                            <p class="pt-1 font-semibold">Mulai Rp 350.000 / bulan</p>
+                    @endforeach
+                    @if ($oneTimeFees->isNotEmpty() && $monthlyFees->isNotEmpty())
+                        <hr class="mt-2 border-white/10">
+                    @endif
+                    @if ($monthlyFees->isNotEmpty())
+                        <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-12">
+                            @foreach ($monthlyFees as $fee)
+                                <div>
+                                    <p class="text-xs uppercase tracking-[.3px] text-white/40">{{ $fee->label }}</p>
+                                    <p class="pt-1 font-semibold">{{ $fee->amount_text }}</p>
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
@@ -584,15 +498,20 @@
 
         <div class="flex items-center bg-navy-950 px-6 py-16 lg:py-24">
             <div class="mx-auto w-full max-w-[560px] lg:ml-0 lg:mr-auto lg:max-w-[640px] lg:pl-12">
-                <form id="reg-form"
+                <form id="reg-form" method="POST" action="{{ route('registration.whatsapp') }}"
                     class="w-full max-w-[560px] space-y-4 rounded-2xl border border-white/10 bg-white/5 p-8">
+                    @csrf
                     <h3 class="font-oswald text-xl font-bold uppercase tracking-wide">Formulir Pendaftaran</h3>
                     @foreach ([['name', 'Nama Lengkap Calon Pemain', 'text'], ['age', 'Usia', 'number'], ['parent', 'Nama Orang Tua / Wali', 'text'], ['phone', 'Nomor WhatsApp', 'tel']] as [$name, $label, $type])
                         <label class="block">
                             <span class="text-xs text-white/50">{{ $label }}</span>
-                            <input name="{{ $name }}" type="{{ $type }}"
+                            <input name="{{ $name }}" type="{{ $type }}" value="{{ old($name) }}"
+                                @if ($name === 'age') min="7" max="20" @endif
                                 @if ($name === 'phone') inputmode="numeric" pattern="[0-9]+" @endif required
                                 class="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-gold">
+                            @error($name)
+                                <span class="mt-1 block text-xs text-[#f87171]">{{ $message }}</span>
+                            @enderror
                         </label>
                     @endforeach
                     <button type="submit" data-reg-submit disabled
@@ -603,6 +522,7 @@
         </div>
     </section>
 
+    @include('partials.gallery-modal')
     @include('partials.footer')
 
 </body>

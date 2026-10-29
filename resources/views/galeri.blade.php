@@ -15,13 +15,15 @@
 @include('partials.navbar')
 
 @php
-    $base = 'https://api.builder.io/api/v1/image/assets/TEMP/';
-    $columns = [
-        [['ca988373b55ac23f44db243d9d2d2ebb111eb5c0', 'h-[210px]'], ['fc5cf8df347f8e58775363a38e8aaf6e3cb0fcac', 'h-[340px]']],
-        [['4d0d9174101d8929152612eeb9a76a6f27df19c8', 'h-[210px]'], ['03b68dcbe8d9b2f4d3b8c779c8cfc2dc28cdd188', 'h-[340px]'], ['59bac4d554a087fbc8409be6440def659cf73e8b', 'h-[210px]']],
-        [['b6ba53fbf5c21068cb8db1a906f99bbe1c27106d', 'h-[210px]'], ['f7c3b6ccc825fde8dec5887c0925968df2e62ea1', 'h-[340px]'], ['9e2ce44b10fc712c4d89673aac0f79aab40fd692', 'h-[210px]']],
-        [['c69cb6556e940d7b3657d9eed2ccfce9273f3487', 'h-[210px]'], ['1248967f4012969993b859a3f21069f2c6d7f820', 'h-[210px]'], ['0cb0f9c1cb7ec62c8c21e7241da988337af9cef9', 'h-[210px]'], ['2c1eff11995749faac53a0b3f81321224abd1dbd', 'h-[340px]']],
-    ];
+    $columns = [[], [], [], []];
+    foreach ($galleries as $index => $photo) {
+        $columns[$index % 4][] = $photo;
+    }
+    $ratioHeight = fn (string $ratio): string => match ($ratio) {
+        'portrait' => 'h-[340px]',
+        'square' => 'h-[260px]',
+        default => 'h-[210px]',
+    };
 @endphp
 
 <main>
@@ -39,29 +41,44 @@
     </section>
 
     <section class="px-6 pb-24">
-        <div class="mx-auto grid max-w-[1280px] grid-cols-2 items-start gap-3 pt-6 lg:grid-cols-4">
-            @foreach ($columns as $column)
-                <div class="flex flex-col gap-3">
-                    @foreach ($column as [$id, $height])
-                        <button type="button" data-gallery-item="{{ $base.$id }}?width=1600" class="group block w-full cursor-pointer overflow-hidden rounded-xl focus:outline-none">
-                            <img src="{{ $base.$id }}?width=622" alt="Dokumentasi Bee Bold Soccer School" loading="lazy" class="{{ $height }} w-full object-cover transition duration-500 group-hover:scale-105">
-                        </button>
+        <div class="mx-auto max-w-[1280px]">
+            @if ($galleries->isNotEmpty())
+                <div class="grid grid-cols-2 items-start gap-3 pt-6 lg:grid-cols-4">
+                    @foreach ($columns as $column)
+                        <div class="flex flex-col gap-3">
+                            @foreach ($column as $photo)
+                                <button type="button"
+                                    data-gallery-item="{{ $photo->image_url }}"
+                                    data-gallery-title="{{ $photo->title }}"
+                                    data-gallery-caption="{{ $photo->caption }}"
+                                    class="group relative block w-full cursor-pointer overflow-hidden rounded-xl text-left focus:outline-none">
+                                    <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy" class="{{ $ratioHeight($photo->grid_ratio) }} w-full object-cover transition duration-500 group-hover:scale-105">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100"></div>
+                                    <div class="absolute inset-x-0 bottom-0 p-4 opacity-0 transition duration-300 group-hover:opacity-100">
+                                        <p class="font-oswald text-sm font-bold uppercase tracking-wide text-white">{{ $photo->title }}</p>
+                                        @if ($photo->caption)
+                                            <p class="line-clamp-2 pt-1 text-xs leading-relaxed text-white/70">{{ $photo->caption }}</p>
+                                        @endif
+                                    </div>
+                                </button>
+                            @endforeach
+                        </div>
                     @endforeach
                 </div>
-            @endforeach
+
+                @if ($galleries->hasPages())
+                    <div class="mt-10">
+                        {{ $galleries->links() }}
+                    </div>
+                @endif
+            @else
+                <p class="py-20 text-center text-base text-white/50">Belum ada foto di galeri.</p>
+            @endif
         </div>
     </section>
 </main>
 
-<div id="gallery-modal" data-gallery-modal aria-hidden="true" role="dialog" aria-modal="true" aria-label="Pratinjau Foto Galeri" class="fixed inset-0 z-[60] hidden items-center justify-center bg-navy-950/80 p-4 backdrop-blur-md">
-    <button type="button" data-gallery-close aria-label="Tutup foto" class="fixed right-5 top-5 z-10 flex size-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-navy-900/90 text-white transition hover:border-gold hover:text-gold">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6 6 18M6 6l12 12"/>
-        </svg>
-    </button>
-    <img data-gallery-img src="" alt="Dokumentasi Bee Bold Soccer School" class="max-h-[85vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl ring-1 ring-white/15">
-</div>
-
+@include('partials.gallery-modal')
 @include('partials.footer')
 
 </body>

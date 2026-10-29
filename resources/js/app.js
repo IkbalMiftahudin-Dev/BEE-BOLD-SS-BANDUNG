@@ -157,59 +157,33 @@ if (regForm) {
     updateRegFormState();
 
     regForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (regSubmit?.disabled) return;
-        const d = Object.fromEntries(new FormData(regForm));
-        const text = `Halo Bee Bold, saya ingin mendaftar.\nNama pemain: ${d.name}\nUsia: ${d.age}\nOrang tua/wali: ${d.parent}\nWhatsApp: ${d.phone}`;
-        window.open(`https://wa.me/6281394555113?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+        if (regSubmit?.disabled) {
+            e.preventDefault();
+        }
     });
 }
 
-const newsCatBtns = document.querySelectorAll('[data-news-cat]');
 const newsSearch = document.querySelector('[data-news-search]');
 const newsCards = document.querySelectorAll('[data-news-card]');
 const newsEmpty = document.querySelector('[data-news-empty]');
 
-if (newsCards.length > 0) {
-    let selectedCategory = 'Semua';
-    let searchQuery = '';
-
-    const filterNews = () => {
+if (newsCards.length > 0 && newsSearch) {
+    newsSearch.addEventListener('input', (e) => {
+        const searchQuery = e.target.value.trim().toLowerCase();
         let visibleCount = 0;
         newsCards.forEach((card) => {
-            const catMatch = selectedCategory === 'Semua' || card.getAttribute('data-category') === selectedCategory;
-            const titleMatch = !searchQuery || (card.getAttribute('data-title') || '').includes(searchQuery);
-            const isVisible = catMatch && titleMatch;
+            const isVisible = !searchQuery || (card.getAttribute('data-title') || '').includes(searchQuery);
             card.classList.toggle('hidden', !isVisible);
             if (isVisible) visibleCount++;
         });
         newsEmpty?.classList.toggle('hidden', visibleCount > 0);
-    };
-
-    const activeCatClasses = ['bg-gold', 'text-brand'];
-    const idleCatClasses = ['border', 'border-white/10', 'bg-white/5', 'text-white/60'];
-
-    newsCatBtns.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            selectedCategory = btn.getAttribute('data-news-cat') || 'Semua';
-            newsCatBtns.forEach((b) => {
-                b.classList.remove(...activeCatClasses);
-                b.classList.add(...idleCatClasses);
-            });
-            btn.classList.remove(...idleCatClasses);
-            btn.classList.add(...activeCatClasses);
-            filterNews();
-        });
-    });
-
-    newsSearch?.addEventListener('input', (e) => {
-        searchQuery = e.target.value.trim().toLowerCase();
-        filterNews();
     });
 }
 
 const galleryModal = document.querySelector('[data-gallery-modal]');
 const galleryImg = document.querySelector('[data-gallery-img]');
+const galleryTitle = document.querySelector('[data-gallery-title]');
+const galleryCaption = document.querySelector('[data-gallery-caption]');
 const galleryClose = document.querySelector('[data-gallery-close]');
 
 if (galleryModal && galleryImg) {
@@ -218,6 +192,9 @@ if (galleryModal && galleryImg) {
         galleryModal.classList.remove('flex');
         galleryModal.setAttribute('aria-hidden', 'true');
         galleryImg.src = '';
+        galleryImg.alt = '';
+        if (galleryTitle) galleryTitle.textContent = '';
+        if (galleryCaption) galleryCaption.textContent = '';
         document.body.classList.remove('overflow-hidden');
     };
 
@@ -225,7 +202,12 @@ if (galleryModal && galleryImg) {
         item.addEventListener('click', () => {
             const imgUrl = item.getAttribute('data-gallery-item');
             if (!imgUrl) return;
+            const titleText = item.getAttribute('data-gallery-title') || 'Dokumentasi Bee Bold Soccer School';
+            const captionText = item.getAttribute('data-gallery-caption') || '';
             galleryImg.src = imgUrl;
+            galleryImg.alt = titleText;
+            if (galleryTitle) galleryTitle.textContent = titleText;
+            if (galleryCaption) galleryCaption.textContent = captionText;
             galleryModal.classList.remove('hidden');
             galleryModal.classList.add('flex');
             galleryModal.setAttribute('aria-hidden', 'false');
