@@ -95,20 +95,20 @@
     </section>
 
     {{-- Statistik & Marquee (Terpisah dari Hero) --}}
-    <section aria-label="Statistik dan Keunggulan Bee Bold" class="relative z-10 border-t border-white/10 bg-[#050d1a]">
+    <section aria-label="Statistik dan Keunggulan Bee Bold" class="relative z-10 border-t border-white/10 bg-[#001228]">
         <div class="mx-auto grid max-w-[1312px] grid-cols-2 divide-y divide-white/10 px-4 sm:px-6 md:grid-cols-4 md:divide-x md:divide-y-0 md:px-16">
             @foreach ($stats as [$value, $label])
                 <div class="px-4 py-6 text-center sm:px-6 md:py-8">
-                    <div class="font-montserrat text-3xl font-black tracking-[-.8px] text-gold sm:text-4xl md:text-[40px]">
+                    <div class="font-montserrat text-3xl font-black tracking-[-.8px] text-gold drop-shadow-[0_2px_12px_rgba(255,204,0,0.3)] sm:text-4xl md:text-[40px]">
                         {{ $value }}</div>
                     <div
-                        class="pt-1.5 font-montserrat text-[10px] font-semibold uppercase tracking-[1.1px] text-white/60 sm:text-[11px]">
+                        class="pt-1.5 font-montserrat text-[10px] font-semibold uppercase tracking-[1.1px] text-white/55 sm:text-[11px]">
                         {{ $label }}</div>
                 </div>
             @endforeach
         </div>
 
-        <div class="overflow-hidden bg-gold py-3.5 shadow-md">
+        <div class="overflow-hidden bg-gold py-3 shadow-md">
             <div class="flex w-max animate-[marquee_30s_linear_infinite] items-center gap-16 pl-6">
                 @for ($i = 0; $i < 3; $i++)
                     @foreach ($marquee as $m)
