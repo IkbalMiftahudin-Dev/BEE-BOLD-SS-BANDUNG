@@ -449,10 +449,6 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-6 flex items-center gap-3 text-xs text-white/30">
-                    <span class="size-2 rounded-full bg-sky/50"></span>
-                    Informasi diperbarui untuk musim latihan 2025/2026
-                </div>
             </div>
         </div>
     </section>
@@ -492,8 +488,11 @@
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <div class="rounded-xl border border-white/10 bg-white/5 p-5 text-sm text-white/70">
-                        <p class="font-oswald font-semibold uppercase tracking-wide text-white">Persyaratan</p>
+                    <div class="rounded-xl border border-gold/30 bg-gold/[0.04] p-5 text-sm text-white/70">
+                        <p class="flex items-center gap-2 font-oswald font-bold uppercase tracking-wider text-gold">
+                            <span class="inline-block h-3.5 w-1 rounded-full bg-gold"></span>
+                            Persyaratan
+                        </p>
                         <ul class="mt-2 list-disc space-y-1 pl-5">
                             <li>Usia 7 - 20 tahun</li>
                             <li>Fotokopi Akte Kelahiran</li>

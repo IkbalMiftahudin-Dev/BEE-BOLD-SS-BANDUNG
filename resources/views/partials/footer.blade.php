@@ -24,7 +24,7 @@
                 </a>
                 <p class="pt-4 text-sm leading-relaxed text-white/50">Membina bakat, mengasah kemampuan, dan membentuk karakter pemain muda Bandung.</p>
                 <div class="pt-5">
-                    <a href="https://www.instagram.com/beeboldss.bdg" target="_blank" rel="noopener" aria-label="Instagram Bee Bold Soccer School" class="flex size-11 items-center justify-center rounded-xl bg-white/10 transition hover:bg-white/20">
+                    <a href="https://www.instagram.com/bee_bold_soccerschool" target="_blank" rel="noopener" aria-label="Instagram Bee Bold Soccer School" class="flex size-11 items-center justify-center rounded-xl bg-white/10 transition hover:bg-white/20">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="white" fill-opacity="0.6"><path d="M8 1.44c2.14 0 2.39.01 3.23.05 2.17.1 3.18 1.13 3.28 3.28.04.84.05 1.1.05 3.23s-.01 2.39-.05 3.23c-.1 2.15-1.11 3.18-3.28 3.28-.84.04-1.1.05-3.23.05s-2.39-.01-3.23-.05C2.59 14.41 1.59 13.38 1.49 11.23 1.45 10.39 1.44 10.14 1.44 8s.01-2.39.05-3.23C1.59 2.62 2.6 1.59 4.77 1.49 5.61 1.45 5.86 1.44 8 1.44ZM8 0C5.83 0 5.56.01 4.7.05 1.8.18.18 1.79.05 4.7.01 5.56 0 5.83 0 8s.01 2.45.05 3.3c.13 2.9 1.74 4.52 4.65 4.65.86.04 1.13.05 3.3.05s2.45-.01 3.3-.05c2.9-.13 4.52-1.74 4.65-4.65.04-.85.05-1.13.05-3.3s-.01-2.45-.05-3.3C15.82 1.8 14.21.18 11.3.05 10.45.01 10.17 0 8 0Zm0 3.89a4.11 4.11 0 1 0 0 8.22 4.11 4.11 0 0 0 0-8.22Zm0 6.78a2.67 2.67 0 1 1 0-5.34 2.67 2.67 0 0 1 0 5.34Zm4.27-7.9a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92Z"/></svg>
                     </a>
                 </div>
@@ -60,7 +60,7 @@
         </div>
 
         <div class="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/30">
-            <p>© 2025 Bee Bold Soccer School. All rights reserved.</p>
+            <p>© 2026 Bee Bold Soccer School. All rights reserved.</p>
             <div class="flex gap-6"><a href="#">Kebijakan Privasi</a><a href="#">Syarat &amp; Ketentuan</a></div>
         </div>
     </div>
