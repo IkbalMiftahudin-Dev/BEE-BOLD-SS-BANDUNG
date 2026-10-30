@@ -58,7 +58,7 @@
         <div class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-gold to-sky"></div>
 
         <div class="relative mx-auto flex w-full max-w-[1280px] flex-1 items-center justify-between px-6 pb-16 pt-28 sm:pb-20 sm:pt-32">
-            <div class="max-w-[640px]">
+            <div class="max-w-[640px]" data-reveal>
                 <p class="font-inter text-xs font-medium uppercase tracking-[1.2px] text-sky">— Sekolah Sepak Bola
                     Bandung</p>
                 <h1 class="mt-3 font-montserrat font-black leading-[.98] tracking-[-2.2px] sm:mt-4">
@@ -83,7 +83,7 @@
                         PROGRAM</a>
                 </div>
             </div>
-            <div class="hidden flex-1 flex-col items-center justify-center lg:flex lg:-translate-y-20">
+            <div class="hidden flex-1 flex-col items-center justify-center lg:flex lg:-translate-y-20" data-reveal>
                 <div class="-rotate-6 text-center font-caveat text-4xl leading-[1.05] xl:text-5xl">
                     <p>More</p>
                     <p>Than Just</p>
@@ -130,7 +130,7 @@
             class="pointer-events-none absolute left-1/2 top-[38%] h-[520px] w-[960px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#004080]/45 blur-[130px]">
         </div>
         <div class="relative mx-auto max-w-[1280px]">
-            <div class="grid items-center gap-12 lg:grid-cols-[1fr_minmax(320px,460px)_280px] lg:items-start">
+            <div class="grid items-center gap-12 lg:grid-cols-[1fr_minmax(320px,460px)_280px] lg:items-start" data-reveal>
                 <div class="lg:pt-4">
                     <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold">— Tentang Kami</p>
                     <h2 class="mt-3 font-oswald text-6xl font-bold uppercase leading-[0.95] md:text-7xl">
@@ -159,10 +159,10 @@
             </div>
 
             <div
-                class="mt-16 rounded-2xl border border-white/5 bg-[#050d1a]/90 px-8 py-12 shadow-2xl backdrop-blur-sm md:px-14">
+                class="mt-16 rounded-2xl border border-white/5 bg-[#050d1a]/90 px-8 py-12 shadow-2xl backdrop-blur-sm md:px-14" data-reveal>
                 <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                    @foreach ([['Pelatihan Profesional', 'Program latihan terstruktur bersama pelatih berpengalaman.', 'logo-pelatihan.svg'], ['Pengembangan Karakter', 'Menanamkan nilai disiplin, kerja sama, dan sportivitas.', 'logo-pengembangan.svg'], ['Fasilitas Lengkap', 'Selain latihan dilengkapi dengan program psikologi, fisiologi, nutrisi, dan pengenalan latihan beban untuk usia tertentu.', 'logo-fasilitas.svg'], ['Kesempatan Berkompetisi', 'Mengikuti turnamen dan uji coba untuk mengasah mental bertanding.', 'logo-kesempatan.svg']] as [$t, $d, $icon])
-                        <div>
+                    @foreach ([['Pelatihan Profesional', 'Program latihan terstruktur bersama pelatih berpengalaman.', 'logo-pelatihan.svg'], ['Pengembangan Karakter', 'Menanamkan nilai disiplin, kerja sama, dan sportivitas.', 'logo-pengembangan.svg'], ['Fasilitas Lengkap', 'Selain latihan dilengkapi dengan program psikologi, fisiologi, nutrisi, dan pengenalan latihan beban untuk usia tertentu.', 'logo-fasilitas.svg'], ['Kesempatan Berkompetisi', 'Mengikuti turnamen dan uji coba untuk mengasah mental bertanding.', 'logo-kesempatan.svg']] as $idx => [$t, $d, $icon])
+                        <div data-reveal class="reveal-delay-{{ $idx + 1 }}">
                             <img src="{{ asset('images/' . $icon) }}" alt="{{ $t }}"
                                 class="mb-4 size-9 object-contain lg:mb-5 lg:size-11">
                             <h3 class="font-inter text-base font-bold leading-snug text-white lg:text-lg">
@@ -174,14 +174,13 @@
                 </div>
             </div>
 
-            <div class="mt-20 text-center">
+            <div class="mt-20 text-center" data-reveal>
                 <div class="mx-auto mb-3 h-0.5 w-8 bg-gold"></div>
                 <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold">Pendiri</p>
             </div>
             <div class="mt-6 grid gap-4 md:grid-cols-3">
-                @foreach ([['Boy Jati Asmara', 'Direktur Pengembangan Bee Bold SS', 'Eks Persib'], ['Eka Ramdani', 'Direktur Teknik Bee Bold SS', 'Mantan Pemain Timnas Indonesia & Persib'], ['Gilang Jalu', 'Direktur PT Gikari Jaya Sentosa', 'Pengusaha sekaligus Pemerhati Sepak Bola']] as [$n, $r, $sub])
-                    <div
-                        class="relative h-[320px] overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-brand to-navy-900">
+                @foreach ([['Boy Jati Asmara', 'Direktur Pengembangan Bee Bold SS', 'Eks Persib'], ['Eka Ramdani', 'Direktur Teknik Bee Bold SS', 'Mantan Pemain Timnas Indonesia & Persib'], ['Gilang Jalu', 'Direktur PT Gikari Jaya Sentosa', 'Pengusaha sekaligus Pemerhati Sepak Bola']] as $idx => [$n, $r, $sub])
+                    <div data-reveal class="reveal-delay-{{ $idx + 1 }} relative h-[320px] overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-brand to-navy-900">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#001428] via-[#001428]/40 to-transparent">
                         </div>
                         <div class="absolute bottom-0 p-6">
@@ -199,15 +198,15 @@
     {{-- Program --}}
     <section id="program" class="bg-navy-950 px-6 py-24">
         <div class="mx-auto max-w-[1280px]">
-            <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold">— Program</p>
-            <div class="flex flex-wrap items-end justify-between gap-6">
+            <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold" data-reveal>— Program</p>
+            <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
                 <h2 class="pt-3 font-oswald text-6xl font-bold uppercase leading-none md:text-7xl">Jalur Menuju <span
                         class="text-gold">Puncak</span></h2>
                 <p class="max-w-sm text-left text-base leading-6 text-white/50">Program terstruktur untuk setiap
                     kelompok usia, dirancang bersama pelatih berlisensi AFC/UEFA.</p>
             </div>
             @if (count($programs) > 4)
-                <div class="mt-10 flex justify-end gap-2">
+                <div class="mt-10 flex justify-end gap-2" data-reveal>
                     <button type="button" data-program-prev aria-label="Geser ke kiri"
                         class="flex size-11 cursor-pointer items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white transition hover:border-gold hover:bg-gold hover:text-brand">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -225,10 +224,9 @@
                 </div>
             @endif
             <div data-program-slider
-                class="no-scrollbar {{ count($programs) > 4 ? 'mt-4' : 'mt-14' }} flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4">
-                @forelse ($programs as $program)
-                    <div data-program-card
-                        class="relative h-[480px] w-[85%] shrink-0 snap-start overflow-hidden rounded-2xl bg-navy-900 bg-cover bg-center sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-3rem)/4)] {{ $loop->even ? 'lg:mt-8' : '' }}"
+                class="no-scrollbar {{ count($programs) > 4 ? 'mt-4' : 'mt-14' }} flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4" data-reveal>
+                @forelse ($programs as $idx => $program)
+                    <div data-program-card data-reveal class="reveal-delay-{{ ($idx % 4) + 1 }} relative h-[480px] w-[85%] shrink-0 snap-start overflow-hidden rounded-2xl bg-navy-900 bg-cover bg-center sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-3rem)/4)] {{ $loop->even ? 'lg:mt-8' : '' }}"
                         style="background-image: linear-gradient(0deg,#001428 0%,rgba(0,20,40,.4) 50%,rgba(0,20,40,0) 100%), url('{{ addcslashes((string) $program->image_url, "'\\\r\n()") }}')">
                         {{-- Badge colour alternates in the view layer; there is no badge_color column. --}}
                         <span
@@ -249,8 +247,8 @@
     {{-- Berita --}}
     <section id="berita" class="bg-navy-950 px-6 py-24">
         <div class="mx-auto max-w-[1280px]">
-            <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold">— Kabar & Cerita</p>
-            <div class="flex flex-wrap items-end justify-between gap-4">
+            <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold" data-reveal>— Kabar & Cerita</p>
+            <div class="flex flex-wrap items-end justify-between gap-4" data-reveal>
                 <h2 class="pt-3 font-oswald text-6xl font-bold uppercase leading-none md:text-7xl">Terkini Dari <span
                         class="text-sky">Lapangan</span></h2>
                 <a href="{{ route('berita.index') }}"
@@ -264,7 +262,7 @@
             </div>
             @if ($featuredNews)
                 <div class="mt-14 grid gap-4 lg:grid-cols-2">
-                    <a href="{{ route('berita.show', $featuredNews->slug) }}"
+                    <a href="{{ route('berita.show', $featuredNews->slug) }}" data-reveal
                         class="group relative block min-h-[480px] overflow-hidden rounded-2xl bg-[#001A33]">
                         <img src="{{ $featuredNews->thumbnail_url }}" alt="{{ $featuredNews->title }}"
                             class="absolute inset-0 size-full object-cover opacity-70 transition duration-500 group-hover:scale-105">
@@ -282,9 +280,8 @@
                         </div>
                     </a>
                     <div class="flex flex-col gap-4">
-                        @foreach ($sideNews as $item)
-                            <a href="{{ route('berita.show', $item->slug) }}"
-                                class="group flex min-h-36 overflow-hidden rounded-2xl bg-[#001A33] transition hover:ring-1 hover:ring-sky/30">
+                        @foreach ($sideNews as $idx => $item)
+                            <a href="{{ route('berita.show', $item->slug) }}" data-reveal class="reveal-delay-{{ $idx + 1 }} group flex min-h-36 overflow-hidden rounded-2xl bg-[#001A33] transition hover:ring-1 hover:ring-sky/30">
                                 <img src="{{ $item->thumbnail_url }}" alt="{{ $item->title }}" loading="lazy"
                                     class="w-32 shrink-0 object-cover transition duration-500 group-hover:scale-105 sm:w-40">
                                 <div class="flex flex-1 flex-col justify-center px-5 py-4">
@@ -301,7 +298,7 @@
                     </div>
                 </div>
             @else
-                <p class="mt-14 py-16 text-center text-base text-white/50">Belum ada berita yang dipublikasikan.</p>
+                <p class="mt-14 py-16 text-center text-base text-white/50" data-reveal>Belum ada berita yang dipublikasikan.</p>
             @endif
         </div>
     </section>
@@ -309,10 +306,10 @@
     {{-- Jadwal --}}
     <section id="jadwal" class="bg-navy-950 px-6 py-24">
         <div class="mx-auto max-w-[1280px]">
-            <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold">— Jadwal</p>
-            <h2 class="pt-3 font-oswald text-6xl font-bold uppercase leading-none md:text-7xl">Jadwal <span
+            <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold" data-reveal>— Jadwal</p>
+            <h2 class="pt-3 font-oswald text-6xl font-bold uppercase leading-none md:text-7xl" data-reveal>Jadwal <span
                     class="text-gold">Mingguan</span></h2>
-            <div class="flex items-center gap-3 pt-4 text-sm text-white/50">
+            <div class="flex items-center gap-3 pt-4 text-sm text-white/50" data-reveal>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="#FFCC00">
                     <path fill-rule="evenodd"
                         d="M4.04 3.24a5.6 5.6 0 0 1 7.92 7.92L8 15.12l-3.96-3.96a5.6 5.6 0 0 1 0-7.92ZM8 8.8a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2Z"
@@ -321,7 +318,7 @@
                 Lapangan UIN 2, Kota Bandung
             </div>
 
-            <div class="flex flex-wrap gap-2 pt-14" data-tabs>
+            <div class="flex flex-wrap gap-2 pt-14" data-tabs data-reveal>
                 @foreach ($schedulesByDay as $dayData)
                     <button type="button" data-tab="{{ $dayData['key'] }}"
                         class="min-h-12 rounded-xl border px-5 py-2.5 font-oswald text-sm font-semibold tracking-[.35px] transition {{ $loop->first ? 'border-gold bg-gold text-brand' : 'border-white/10 bg-white/5 text-white/60' }}">{{ $dayData['label'] }}</button>
@@ -329,7 +326,7 @@
             </div>
 
             @forelse ($schedulesByDay as $dayData)
-                <div data-schedule-panel="{{ $dayData['key'] }}"
+                <div data-schedule-panel="{{ $dayData['key'] }}" data-reveal
                     class="mt-8 flex flex-col gap-3 {{ $loop->first ? '' : 'hidden' }}">
                     <div class="mb-1 flex items-center gap-2 text-xs font-medium uppercase tracking-[1px] text-sky">
                         <span class="size-2 rounded-full bg-gold"></span>
@@ -353,10 +350,10 @@
                     @endforeach
                 </div>
             @empty
-                <p class="mt-8 py-10 text-center text-base text-white/50">Jadwal latihan akan segera diumumkan.</p>
+                <p class="mt-8 py-10 text-center text-base text-white/50" data-reveal>Jadwal latihan akan segera diumumkan.</p>
             @endforelse
 
-            <div
+            <div data-reveal
                 class="mt-3 flex items-center gap-4 rounded-xl border border-white/10 bg-white/[.08] p-5 text-sm text-white/60">
                 <svg class="shrink-0" width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <circle cx="10" cy="10" r="7.5" stroke="#FFCC00" stroke-width="1.67" />
@@ -373,8 +370,8 @@
     {{-- Galeri --}}
     <section id="galeri" class="bg-navy-950 px-6 py-24">
         <div class="mx-auto max-w-[1280px]">
-            <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold">— Galeri</p>
-            <div class="flex flex-wrap items-end justify-between gap-4">
+            <p class="text-xs font-medium uppercase tracking-[1.2px] text-gold" data-reveal>— Galeri</p>
+            <div class="flex flex-wrap items-end justify-between gap-4" data-reveal>
                 <h2 class="pt-3 font-oswald text-6xl font-bold uppercase leading-none md:text-7xl">Momen <span
                         class="text-sky">Terbaik</span></h2>
                 <a href="{{ route('galeri.index') }}"
@@ -388,10 +385,9 @@
             </div>
             @if ($highlightedGalleries->isNotEmpty())
                 <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    @foreach ($highlightedGalleries as $photo)
-                        <button type="button" data-gallery-item="{{ $photo->image_url }}"
-                            data-gallery-title="{{ $photo->title }}" data-gallery-caption="{{ $photo->caption }}"
-                            class="group relative h-[260px] w-full cursor-pointer overflow-hidden rounded-2xl text-left focus:outline-none">
+                    @foreach ($highlightedGalleries as $idx => $photo)
+                        <button type="button" data-gallery-item="{{ $photo->image_url }}" data-reveal class="reveal-delay-{{ ($idx % 3) + 1 }} group relative h-[260px] w-full cursor-pointer overflow-hidden rounded-2xl text-left focus:outline-none"
+                            data-gallery-title="{{ $photo->title }}" data-gallery-caption="{{ $photo->caption }}">
                             <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy"
                                 class="size-full object-cover transition duration-500 group-hover:scale-105">
                             <div
@@ -410,7 +406,7 @@
                     @endforeach
                 </div>
             @else
-                <p class="mt-14 py-16 text-center text-base text-white/50">Belum ada dokumentasi galeri.</p>
+                <p class="mt-14 py-16 text-center text-base text-white/50" data-reveal>Belum ada dokumentasi galeri.</p>
             @endif
         </div>
     </section>
@@ -423,14 +419,14 @@
         <div class="relative mx-auto grid max-w-[1280px] gap-20 lg:grid-cols-12">
             <span
                 class="pointer-events-none absolute -left-4 -top-12 font-oswald text-[180px] font-bold leading-none text-white/[.03]">?</span>
-            <div class="lg:col-span-5">
+            <div class="lg:col-span-5" data-reveal>
                 <p class="text-xs font-medium uppercase tracking-[1.2px] text-sky">— Frequently Asked Questions</p>
                 <h2 class="pt-3 font-oswald text-6xl font-bold uppercase leading-none md:text-7xl">Masih Ada <span
                         class="text-gold">Pertanyaan?</span></h2>
                 <p class="max-w-md pt-6 text-base leading-[1.625] text-white/50">Temukan jawaban seputar program,
                     pendaftaran, dan pengalaman berlatih di Bee Bold Soccer School.</p>
             </div>
-            <div class="lg:col-span-7">
+            <div class="lg:col-span-7" data-reveal>
                 <div class="border-t border-white/10" data-faq>
                     @foreach ($faqs as $i => $faq)
                         <div class="border-b border-white/10">
@@ -455,7 +451,7 @@
 
     {{-- Pendaftaran --}}
     <section id="daftar" class="grid lg:grid-cols-2">
-        <div class="relative overflow-hidden bg-brand px-6 py-16 lg:py-24">
+        <div class="relative overflow-hidden bg-brand px-6 py-16 lg:py-24" data-reveal>
             <img src="{{ asset('images/lapangan.jpg') }}" alt="Lapangan Bee Bold Soccer School"
                 class="absolute inset-0 size-full object-cover object-center">
             <div class="absolute inset-0 bg-brand/70 mix-blend-multiply"></div>
@@ -488,7 +484,7 @@
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <div class="rounded-xl border border-gold/30 bg-gold/[0.04] p-5 text-sm text-white/70">
+                    <div class="reveal-delay-1 rounded-xl border border-gold/30 bg-gold/[0.04] p-5 text-sm text-white/70" data-reveal>
                         <p class="flex items-center gap-2 font-oswald font-bold uppercase tracking-wider text-gold">
                             <span class="inline-block h-3.5 w-1 rounded-full bg-gold"></span>
                             Persyaratan
@@ -503,7 +499,7 @@
                         </ul>
                     </div>
 
-                    <div class="rounded-xl border border-white/10 bg-white/5 p-5 text-sm text-white/70">
+                    <div class="reveal-delay-2 rounded-xl border border-white/10 bg-white/5 p-5 text-sm text-white/70" data-reveal>
                         <p class="font-oswald font-semibold uppercase tracking-wide text-white">Sudah Termasuk</p>
                         <ul class="mt-2 list-disc space-y-1 pl-5">
                             <li>Jersey latihan</li>
@@ -516,7 +512,7 @@
         </div>
 
         <div class="flex items-center bg-navy-950 px-6 py-16 lg:py-24">
-            <div class="mx-auto w-full max-w-[560px] lg:ml-0 lg:mr-auto lg:max-w-[640px] lg:pl-12">
+            <div class="mx-auto w-full max-w-[560px] lg:ml-0 lg:mr-auto lg:max-w-[640px] lg:pl-12" data-reveal>
                 <form id="reg-form" method="POST" action="{{ route('registration.whatsapp') }}"
                     class="w-full max-w-[560px] space-y-4 rounded-2xl border border-white/10 bg-white/5 p-8">
                     @csrf

@@ -267,3 +267,31 @@ if (dashSidebar && dashBackdrop) {
         }
     });
 }
+
+// Scroll Reveal Animation (IntersectionObserver: replay on scroll up and down)
+const revealElements = document.querySelectorAll('[data-reveal]');
+if (revealElements.length > 0) {
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        revealElements.forEach((el) => el.classList.add('reveal-init'));
+
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    } else {
+                        // Reset saat elemen keluar dari viewport (scroll lewat atau balik ke atas)
+                        entry.target.classList.remove('revealed');
+                    }
+                });
+            },
+            {
+                root: null,
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px',
+            }
+        );
+
+        revealElements.forEach((el) => revealObserver.observe(el));
+    }
+}
