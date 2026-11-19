@@ -24,6 +24,12 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
     Route::post('/login', 'login')
         ->middleware('throttle:10,1')
         ->name('login.attempt');
+    Route::post('/login/recovery/verify', 'verifyBackupCode')
+        ->middleware('throttle:5,15')
+        ->name('login.recovery.verify');
+    Route::post('/login/recovery/reset', 'resetPasswordWithBackupCode')
+        ->middleware('throttle:5,15')
+        ->name('login.recovery.reset');
 });
 
 Route::middleware('auth')->group(function () {
@@ -61,7 +67,6 @@ Route::middleware('auth')->group(function () {
             Route::middleware('role:admin')->group(function () {
                 Route::get('/profil', 'profileEdit')->name('dashboard.profile.edit');
                 Route::put('/profil', 'profileUpdate')->name('dashboard.profile.update');
-                Route::put('/profil/password', 'passwordUpdate')->name('dashboard.profile.password');
                 Route::get('/program', 'programsIndex')->name('dashboard.programs.index');
                 Route::get('/program/tambah', 'programsCreate')->name('dashboard.programs.create');
                 Route::post('/program', 'programsStore')->name('dashboard.programs.store');

@@ -15,7 +15,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -704,34 +703,6 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->route('dashboard.profile.edit')->with('status', 'Profil dan alamat email berhasil diperbarui.');
-    }
-
-    public function passwordUpdate(Request $request): RedirectResponse
-    {
-        /** @var User $user */
-        $user = $request->user();
-
-        $validated = $request->validate([
-            'current_password' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:8', 'max:255', 'confirmed'],
-        ], [
-            'current_password.required' => 'Kata sandi saat ini wajib diisi.',
-            'password.required' => 'Kata sandi baru wajib diisi.',
-            'password.min' => 'Kata sandi baru minimal 8 karakter.',
-            'password.confirmed' => 'Konfirmasi kata sandi baru tidak cocok.',
-        ]);
-
-        if (! Hash::check($validated['current_password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'current_password' => 'Kata sandi saat ini yang Anda masukkan tidak sesuai.',
-            ]);
-        }
-
-        $user->update([
-            'password' => $validated['password'],
-        ]);
-
-        return redirect()->route('dashboard.profile.edit')->with('status', 'Kata sandi Anda berhasil diperbarui.');
     }
 
     // =========================================================================

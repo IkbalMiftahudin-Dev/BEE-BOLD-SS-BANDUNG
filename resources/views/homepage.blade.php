@@ -57,8 +57,8 @@
         <div class="absolute inset-0 bg-gradient-to-r from-brand/90 to-transparent to-60%"></div>
         <div class="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-gold to-sky"></div>
 
-        <div class="relative mx-auto flex w-full max-w-[1280px] flex-1 items-center justify-between px-6 pb-16 pt-28 sm:pb-20 sm:pt-32">
-            <div class="max-w-[640px]" data-reveal>
+        <div class="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-between gap-6 px-6 pb-16 pt-24 sm:gap-10 sm:pb-20 sm:pt-32 lg:flex-row lg:gap-8">
+            <div class="order-2 w-full max-w-[640px] text-center lg:order-1 lg:text-left" data-reveal>
                 <p class="font-inter text-xs font-medium uppercase tracking-[1.2px] text-sky">— Sekolah Sepak Bola
                     Bandung</p>
                 <h1 class="mt-3 font-montserrat font-black leading-[.98] tracking-[-2.2px] sm:mt-4">
@@ -66,12 +66,12 @@
                     <span class="block text-5xl italic text-gold sm:text-6xl lg:text-[70px] xl:text-[77px]">BEE BOLD</span>
                     <span class="block text-4xl text-white sm:text-5xl lg:text-[64px] xl:text-[72px]">SOCCER SCHOOL</span>
                 </h1>
-                <p class="mt-5 max-w-xl text-base leading-[1.625] text-white/70 sm:mt-6 sm:text-lg">Sekolah sepak bola di Bandung yang
+                <p class="mx-auto mt-4 max-w-xl text-base leading-[1.625] text-white/70 sm:mt-6 sm:text-lg lg:mx-0">Sekolah sepak bola di Bandung yang
                     membina bakat, mengasah kemampuan, dan membentuk karakter pemain muda untuk meraih prestasi di
                     lapangan.</p>
-                <div class="mt-6 flex flex-wrap gap-3 sm:mt-8 sm:gap-4">
+                <div class="mt-6 flex flex-wrap justify-center gap-3 sm:mt-8 sm:gap-4 lg:justify-start">
                     <a href="#daftar"
-                        class="flex min-h-12 items-center gap-3 rounded-xl bg-gold px-6 py-3.5 font-oswald text-base font-bold tracking-wide text-brand shadow-[0_8px_32px_rgba(255,204,0,.4)] sm:px-8 sm:py-4 sm:text-lg">
+                        class="flex min-h-12 items-center gap-3 rounded-xl bg-gold px-6 py-3.5 font-oswald text-base font-bold tracking-wide text-brand shadow-[0_8px_32px_rgba(255,204,0,.4)] transition-transform hover:scale-[1.02] active:scale-[0.98] sm:px-8 sm:py-4 sm:text-lg">
                         DAFTAR SEKARANG
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M14.16 13.33 17.49 10l-3.33-3.33M17.49 10H2.5" stroke="#036" stroke-width="2"
@@ -79,17 +79,27 @@
                         </svg>
                     </a>
                     <a href="#program"
-                        class="flex min-h-12 items-center rounded-xl border border-white/30 px-6 py-3.5 font-oswald text-base font-semibold tracking-wide sm:px-8 sm:py-4 sm:text-lg">LIHAT
+                        class="flex min-h-12 items-center rounded-xl border border-white/30 px-6 py-3.5 font-oswald text-base font-semibold tracking-wide backdrop-blur-sm transition-all hover:border-gold hover:text-gold sm:px-8 sm:py-4 sm:text-lg">LIHAT
                         PROGRAM</a>
                 </div>
             </div>
-            <div class="hidden flex-1 flex-col items-center justify-center lg:flex lg:-translate-y-20" data-reveal>
-                <div class="-rotate-6 text-center font-caveat text-4xl leading-[1.05] xl:text-5xl">
-                    <p>More</p>
-                    <p>Than Just</p>
-                    <p>Football</p>
+
+            {{-- 3D Interactive Animated Soccer Ball (order-1 di mobile agar langsung tampak di layar atas HP) --}}
+            <div class="order-1 relative flex w-full max-w-[520px] flex-1 flex-col items-center justify-center lg:order-2">
+                {{-- Decorative Ambient Backlight Blur --}}
+                <div class="pointer-events-none absolute h-[200px] w-[200px] rounded-full bg-gold/15 blur-[70px] sm:h-[340px] sm:w-[340px] sm:bg-gold/20"></div>
+                <div class="pointer-events-none absolute -bottom-4 h-[180px] w-[180px] rounded-full bg-sky/20 blur-[60px] sm:h-[280px] sm:w-[280px]"></div>
+
+                {{-- Floating Hand-drawn "More Than Just Football" Badge --}}
+                <div class="pointer-events-none absolute -top-3 right-4 z-20 -rotate-6 rounded-2xl border border-white/15 bg-[#001f40]/80 px-3.5 py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.4)] backdrop-blur-md sm:-top-4 sm:right-6 sm:px-5 sm:py-2.5">
+                    <p class="font-caveat text-lg font-bold leading-tight text-white sm:text-2xl">More Than Just <span class="text-gold">Football</span></p>
+                    <div class="mt-0.5 h-[3px] w-full rounded-full bg-gradient-to-r from-gold to-sky"></div>
                 </div>
-                <div class="mt-1.5 h-[7px] w-[170px] -rotate-[4deg] rounded-md bg-gold xl:w-[195px]"></div>
+
+                {{-- 3D Ball Canvas Container (Responsive: Mobile 240px, Tablet 360px, Desktop 460px-500px) --}}
+                <div class="relative h-[240px] w-full max-w-[280px] sm:h-[340px] sm:max-w-[400px] lg:h-[460px] lg:max-w-[500px]">
+                    <canvas id="hero-3d-ball-canvas" class="size-full touch-pan-y select-none" aria-label="Animasi 3D Bola Sepak Interaktif Bee Bold"></canvas>
+                </div>
             </div>
         </div>
     </section>

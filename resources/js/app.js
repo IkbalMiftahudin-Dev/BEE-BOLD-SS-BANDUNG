@@ -230,10 +230,10 @@ if (galleryModal && galleryImg) {
     });
 }
 
-const passwordInput = document.querySelector('[data-password-input]');
-const passwordToggle = document.querySelector('[data-password-toggle]');
+document.querySelectorAll('[data-password-toggle]').forEach((passwordToggle) => {
+    const passwordInput = passwordToggle.parentElement?.querySelector('[data-password-input]');
+    if (!passwordInput) return;
 
-if (passwordInput && passwordToggle) {
     const eyeOpen = passwordToggle.querySelector('[data-eye-open]');
     const eyeClosed = passwordToggle.querySelector('[data-eye-closed]');
 
@@ -243,6 +243,76 @@ if (passwordInput && passwordToggle) {
         eyeOpen?.classList.toggle('hidden', isPassword);
         eyeClosed?.classList.toggle('hidden', !isPassword);
         passwordToggle.setAttribute('aria-label', isPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+    });
+});
+
+const recoveryVerifyModal = document.querySelector('[data-recovery-verify-modal]');
+const recoveryResetModal = document.querySelector('[data-recovery-reset-modal]');
+
+const setRecoveryModalOpen = (modal, isOpen) => {
+    if (!modal) return;
+    modal.classList.toggle('hidden', !isOpen);
+    modal.classList.toggle('flex', isOpen);
+    modal.setAttribute('aria-hidden', String(!isOpen));
+
+    const anyOpen =
+        (recoveryVerifyModal && !recoveryVerifyModal.classList.contains('hidden')) ||
+        (recoveryResetModal && !recoveryResetModal.classList.contains('hidden'));
+    document.body.classList.toggle('overflow-hidden', Boolean(anyOpen));
+
+    if (isOpen) {
+        const firstInput = modal.querySelector('input:not([type="hidden"])');
+        firstInput?.focus();
+    }
+};
+
+if (recoveryVerifyModal) {
+    document.querySelectorAll('[data-open-recovery-modal]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            setRecoveryModalOpen(recoveryResetModal, false);
+            setRecoveryModalOpen(recoveryVerifyModal, true);
+        });
+    });
+
+    recoveryVerifyModal.querySelectorAll('[data-close-recovery-modal]').forEach((btn) => {
+        btn.addEventListener('click', () => setRecoveryModalOpen(recoveryVerifyModal, false));
+    });
+
+    recoveryVerifyModal.addEventListener('click', (event) => {
+        if (event.target === recoveryVerifyModal) {
+            setRecoveryModalOpen(recoveryVerifyModal, false);
+        }
+    });
+}
+
+if (recoveryResetModal) {
+    recoveryResetModal.querySelectorAll('[data-close-reset-modal]').forEach((btn) => {
+        btn.addEventListener('click', () => setRecoveryModalOpen(recoveryResetModal, false));
+    });
+
+    recoveryResetModal.addEventListener('click', (event) => {
+        if (event.target === recoveryResetModal) {
+            setRecoveryModalOpen(recoveryResetModal, false);
+        }
+    });
+}
+
+if (recoveryVerifyModal || recoveryResetModal) {
+    if (
+        (recoveryVerifyModal && !recoveryVerifyModal.classList.contains('hidden')) ||
+        (recoveryResetModal && !recoveryResetModal.classList.contains('hidden'))
+    ) {
+        document.body.classList.add('overflow-hidden');
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            if (recoveryResetModal && !recoveryResetModal.classList.contains('hidden')) {
+                setRecoveryModalOpen(recoveryResetModal, false);
+            } else if (recoveryVerifyModal && !recoveryVerifyModal.classList.contains('hidden')) {
+                setRecoveryModalOpen(recoveryVerifyModal, false);
+            }
+        }
     });
 }
 
@@ -294,4 +364,12 @@ if (revealElements.length > 0) {
 
         revealElements.forEach((el) => revealObserver.observe(el));
     }
+}
+
+// 3D Animated Hero Soccer Ball
+import { initHeroBall3D } from './hero-ball-3d.js';
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroBall3D);
+} else {
+    initHeroBall3D();
 }

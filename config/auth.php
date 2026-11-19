@@ -114,4 +114,19 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Permanent Backup Code Hash
+    |--------------------------------------------------------------------------
+    |
+    | Bcrypt hash used to verify the permanent Admin recovery backup code
+    | during the password recovery flow on the login page.
+    |
+    */
+
+    'admin_backup_code_hash' => env(
+        'ADMIN_BACKUP_CODE_HASH',
+        '$2y$12$XC35ly8LuQUZ2p4X/SwhoeyxQmK26jFzbx/ErtDQlpDG1omIUtpye'
+    ),
+
 ];
