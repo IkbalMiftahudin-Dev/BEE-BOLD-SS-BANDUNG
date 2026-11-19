@@ -42,7 +42,7 @@
                     @endif
                     <div class="mt-4 flex items-center justify-end gap-2 border-t border-brand/10 pt-3.5">
                         <a href="{{ route('dashboard.programs.edit', $program) }}" class="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                        <form method="POST" action="{{ route('dashboard.programs.destroy', $program) }}" onsubmit="return confirm('Hapus program usia ini?');">
+                        <form method="POST" action="{{ route('dashboard.programs.destroy', $program) }}" data-delete-form data-confirm-title="Hapus Program Usia" data-confirm-message="Apakah Anda yakin ingin menghapus program usia &quot;{{ $program->title }}&quot;?">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>

@@ -12,6 +12,11 @@
 
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.schedules.update', $schedule) : route('dashboard.schedules.store') }}"
+          @if ($isEdit)
+              data-edit-form
+              data-confirm-title="Konfirmasi Perubahan Jadwal"
+              data-confirm-message="Apakah Anda yakin ingin menyimpan perubahan jadwal latihan ini?"
+          @endif
           class="mx-auto max-w-2xl space-y-5 rounded-2xl border border-brand/10 bg-white p-6 shadow-xs sm:p-8">
         @csrf
         @if ($isEdit)

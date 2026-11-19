@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('dashboard.profile.update') }}" class="mt-5 space-y-4">
+            <form method="POST" action="{{ route('dashboard.profile.update') }}" data-edit-form data-confirm-title="Konfirmasi Perubahan Profil" data-confirm-message="Apakah Anda yakin ingin menyimpan perubahan nama tampilan dan alamat email Admin?" class="mt-5 space-y-4">
                 @csrf
                 @method('PUT')
 
@@ -66,10 +66,6 @@
                         </ol>
                     </div>
                 </div>
-            </div>
-
-            <div class="mt-5 border-t border-brand/10 pt-4 text-[11px] leading-relaxed text-navy-900/55">
-                Hash verifikasi Backup Code disimpan terenkripsi pada konfigurasi lingkungan server (<code class="rounded bg-[#eaf2fb] px-1.5 py-0.5 font-mono text-brand">ADMIN_BACKUP_CODE_HASH</code>) dan tidak dapat diakses dari sisi peramban.
             </div>
         </div>
     </div>

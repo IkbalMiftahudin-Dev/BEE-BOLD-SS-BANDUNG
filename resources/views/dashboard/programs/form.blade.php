@@ -13,6 +13,12 @@
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.programs.update', $program) : route('dashboard.programs.store') }}"
           enctype="multipart/form-data"
+          @if ($isEdit)
+              data-edit-form
+              data-has-existing-media="{{ $program->image_path ? 'true' : 'false' }}"
+              data-confirm-title="Konfirmasi Perubahan Program"
+              data-confirm-message="Apakah Anda yakin ingin menyimpan perubahan data program usia ini?"
+          @endif
           class="mx-auto max-w-3xl space-y-5 rounded-2xl border border-brand/10 bg-white p-6 shadow-xs sm:p-8">
         @csrf
         @if ($isEdit)
@@ -48,7 +54,7 @@
 
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-brand">Urutan Tampil <span class="text-[#c5221f]">*</span></label>
-                <input type="number" name="sort_order" min="0" max="999" value="{{ old('sort_order', $program->sort_order) }}" required class="mt-1.5 min-h-11 w-full rounded-xl border border-brand/15 bg-[#f4f7fb] px-4 py-2.5 text-sm text-navy-950 outline-none focus:border-brand focus:bg-white">
+                <input type="number" name="sort_order" min="1" max="999" value="{{ old('sort_order', $program->sort_order) }}" data-used-orders="{{ json_encode($usedSortOrders ?? []) }}" required class="mt-1.5 min-h-11 w-full rounded-xl border border-brand/15 bg-[#f4f7fb] px-4 py-2.5 text-sm text-navy-950 outline-none focus:border-brand focus:bg-white">
             </div>
         </div>
 

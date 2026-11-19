@@ -60,6 +60,9 @@ class PublicPageController extends Controller
                 ->limit(self::HOME_GALLERY_LIMIT)
                 ->get(),
             'faqs' => Faq::query()->active()->get(),
+            'feeGroups' => $fees->chunkWhile(
+                fn (RegistrationFee $fee, int $key, Collection $chunk): bool => $fee->fee_type === $chunk->last()->fee_type
+            )->values(),
             'oneTimeFees' => $fees->where('fee_type', RegistrationFee::TYPE_ONE_TIME)->values(),
             'monthlyFees' => $fees->where('fee_type', RegistrationFee::TYPE_MONTHLY)->values(),
         ]);

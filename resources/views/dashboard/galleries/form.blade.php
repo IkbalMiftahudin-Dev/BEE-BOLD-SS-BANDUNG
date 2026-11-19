@@ -13,6 +13,12 @@
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.galleries.update', $gallery) : route('dashboard.galleries.store') }}"
           enctype="multipart/form-data"
+          @if ($isEdit)
+              data-edit-form
+              data-has-existing-media="{{ $gallery->image_path ? 'true' : 'false' }}"
+              data-confirm-title="Konfirmasi Perubahan Galeri"
+              data-confirm-message="Apakah Anda yakin ingin menyimpan perubahan data foto galeri ini?"
+          @endif
           class="mx-auto max-w-3xl space-y-5 rounded-2xl border border-brand/10 bg-white p-6 shadow-xs sm:p-8">
         @csrf
         @if ($isEdit)
@@ -49,7 +55,7 @@
 
         @if ($isEdit && $gallery->image_url)
             <div class="overflow-hidden rounded-xl border border-brand/10 bg-slate-100 p-2">
-                <img src="{{ $gallery->image_url }}" alt="{{ $gallery->title }}" class="max-h-64 w-full rounded-lg object-contain">
+                <img src="{{ $gallery->image_url }}" alt="{{ $gallery->title }}" referrerpolicy="no-referrer" class="max-h-64 w-full rounded-lg object-contain">
             </div>
         @endif
 

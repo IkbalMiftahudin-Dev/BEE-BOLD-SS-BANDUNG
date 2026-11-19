@@ -18,7 +18,7 @@
         @forelse ($galleries as $photo)
             <div class="flex flex-col overflow-hidden rounded-2xl border border-brand/10 bg-white shadow-xs">
                 <div class="relative h-52 overflow-hidden bg-slate-100">
-                    <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" class="size-full object-cover">
+                    <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" referrerpolicy="no-referrer" class="size-full object-cover">
                     <div class="absolute left-3 top-3 flex flex-wrap gap-1.5">
                         <span class="rounded-full bg-brand/90 px-2.5 py-1 font-oswald text-[10px] font-bold uppercase tracking-wider text-white">{{ $photo->grid_ratio }}</span>
                         @if ($photo->is_highlighted_on_home)
@@ -33,7 +33,7 @@
                         <span class="text-[11px] text-navy-900/45">Oleh: {{ $photo->uploader?->name ?? 'Admin' }}</span>
                         <div class="inline-flex items-center gap-2">
                             <a href="{{ route('dashboard.galleries.edit', $photo) }}" class="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                            <form method="POST" action="{{ route('dashboard.galleries.destroy', $photo) }}" onsubmit="return confirm('Hapus foto dokumentasi ini dari galeri?');">
+                            <form method="POST" action="{{ route('dashboard.galleries.destroy', $photo) }}" data-delete-form data-confirm-title="Hapus Foto Galeri" data-confirm-message="Apakah Anda yakin ingin menghapus foto dokumentasi &quot;{{ $photo->title }}&quot; dari galeri?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>

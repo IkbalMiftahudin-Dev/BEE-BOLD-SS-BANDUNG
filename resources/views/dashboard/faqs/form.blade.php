@@ -12,6 +12,11 @@
 
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.faqs.update', $faq) : route('dashboard.faqs.store') }}"
+          @if ($isEdit)
+              data-edit-form
+              data-confirm-title="Konfirmasi Perubahan FAQ"
+              data-confirm-message="Apakah Anda yakin ingin menyimpan perubahan pertanyaan dan jawaban FAQ ini?"
+          @endif
           class="mx-auto max-w-2xl space-y-5 rounded-2xl border border-brand/10 bg-white p-6 shadow-xs sm:p-8">
         @csrf
         @if ($isEdit)
@@ -31,7 +36,7 @@
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-brand">Urutan Tampil <span class="text-[#c5221f]">*</span></label>
-                <input type="number" name="sort_order" min="0" max="999" value="{{ old('sort_order', $faq->sort_order) }}" required class="mt-1.5 min-h-11 w-full rounded-xl border border-brand/15 bg-[#f4f7fb] px-4 py-2.5 text-sm text-navy-950 outline-none focus:border-brand focus:bg-white">
+                <input type="number" name="sort_order" min="1" max="999" value="{{ old('sort_order', $faq->sort_order) }}" data-used-orders="{{ json_encode($usedSortOrders ?? []) }}" required class="mt-1.5 min-h-11 w-full rounded-xl border border-brand/15 bg-[#f4f7fb] px-4 py-2.5 text-sm text-navy-950 outline-none focus:border-brand focus:bg-white">
             </div>
 
             <div class="flex items-end">

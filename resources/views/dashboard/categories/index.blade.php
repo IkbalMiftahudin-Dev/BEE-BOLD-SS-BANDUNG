@@ -30,14 +30,14 @@
                             <code class="rounded bg-[#eaf2fb] px-2 py-0.5 text-[11px] text-brand">{{ $cat->slug }}</code>
                             <span class="text-xs font-semibold text-navy-900/70">{{ $cat->news_count }} artikel</span>
                         </div>
-                        <form id="cat-mobile-form-{{ $cat->id }}" method="POST" action="{{ route('dashboard.categories.update', $cat) }}" class="mt-3">
+                        <form id="cat-mobile-form-{{ $cat->id }}" method="POST" action="{{ route('dashboard.categories.update', $cat) }}" data-edit-form data-confirm-title="Konfirmasi Ubah Kategori" data-confirm-message="Apakah Anda yakin ingin menyimpan perubahan nama kategori berita ini?" class="mt-3">
                             @csrf
                             @method('PUT')
-                            <input type="text" name="name" value="{{ $cat->name }}" required maxlength="50" class="min-h-10 w-full rounded-xl border border-brand/15 bg-[#f4f7fb] px-3.5 py-2 text-xs font-semibold text-navy-950 outline-none focus:border-brand focus:bg-white">
+                            <input type="text" name="name" data-field-label="Nama Kategori" value="{{ $cat->name }}" required maxlength="50" class="min-h-10 w-full rounded-xl border border-brand/15 bg-[#f4f7fb] px-3.5 py-2 text-xs font-semibold text-navy-950 outline-none focus:border-brand focus:bg-white">
                         </form>
                         <div class="mt-3 flex items-center justify-end gap-2">
                             <button type="submit" form="cat-mobile-form-{{ $cat->id }}" class="cursor-pointer rounded-lg bg-brand px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Simpan</button>
-                            <form method="POST" action="{{ route('dashboard.categories.destroy', $cat) }}" onsubmit="return confirm('Hapus kategori berita ini?');">
+                            <form method="POST" action="{{ route('dashboard.categories.destroy', $cat) }}" data-delete-form data-confirm-title="Hapus Kategori Berita" data-confirm-message="Apakah Anda yakin ingin menghapus kategori &quot;{{ $cat->name }}&quot;?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3.5 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>
@@ -63,10 +63,10 @@
                             @foreach ($categories as $cat)
                                 <tr class="hover:bg-[#f8fafd]">
                                     <td class="px-5 py-3.5">
-                                        <form id="cat-form-{{ $cat->id }}" method="POST" action="{{ route('dashboard.categories.update', $cat) }}" class="flex items-center gap-2">
+                                        <form id="cat-form-{{ $cat->id }}" method="POST" action="{{ route('dashboard.categories.update', $cat) }}" data-edit-form data-confirm-title="Konfirmasi Ubah Kategori" data-confirm-message="Apakah Anda yakin ingin menyimpan perubahan nama kategori berita ini?" class="flex items-center gap-2">
                                             @csrf
                                             @method('PUT')
-                                            <input type="text" name="name" value="{{ $cat->name }}" required maxlength="50" class="min-h-9 w-full max-w-[200px] rounded-lg border border-brand/15 bg-[#f4f7fb] px-3 py-1.5 text-xs font-semibold text-navy-950 outline-none focus:border-brand focus:bg-white">
+                                            <input type="text" name="name" data-field-label="Nama Kategori" value="{{ $cat->name }}" required maxlength="50" class="min-h-9 w-full max-w-[200px] rounded-lg border border-brand/15 bg-[#f4f7fb] px-3 py-1.5 text-xs font-semibold text-navy-950 outline-none focus:border-brand focus:bg-white">
                                         </form>
                                     </td>
                                     <td class="px-4 py-3.5">
@@ -78,7 +78,7 @@
                                     <td class="px-5 py-3.5 text-right">
                                         <div class="inline-flex items-center gap-2">
                                             <button type="submit" form="cat-form-{{ $cat->id }}" class="cursor-pointer rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Simpan</button>
-                                            <form method="POST" action="{{ route('dashboard.categories.destroy', $cat) }}" onsubmit="return confirm('Hapus kategori berita ini?');">
+                                            <form method="POST" action="{{ route('dashboard.categories.destroy', $cat) }}" data-delete-form data-confirm-title="Hapus Kategori Berita" data-confirm-message="Apakah Anda yakin ingin menghapus kategori &quot;{{ $cat->name }}&quot;?">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>

@@ -37,7 +37,7 @@
                                     <span class="text-xs font-medium text-navy-900/65">{{ $item->coach_name }}</span>
                                     <div class="inline-flex items-center gap-1.5">
                                         <a href="{{ route('dashboard.schedules.edit', $item) }}" class="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                                        <form method="POST" action="{{ route('dashboard.schedules.destroy', $item) }}" onsubmit="return confirm('Hapus baris jadwal latihan ini?');">
+                                        <form method="POST" action="{{ route('dashboard.schedules.destroy', $item) }}" data-delete-form data-confirm-title="Hapus Jadwal Latihan" data-confirm-message="Apakah Anda yakin ingin menghapus jadwal latihan hari {{ $item->day_of_week }} ({{ $item->time_slot }} - {{ $item->target_category }})?">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>
@@ -72,7 +72,7 @@
                                         <td class="px-5 py-3.5 text-right">
                                             <div class="inline-flex items-center gap-2">
                                                 <a href="{{ route('dashboard.schedules.edit', $item) }}" class="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                                                <form method="POST" action="{{ route('dashboard.schedules.destroy', $item) }}" onsubmit="return confirm('Hapus baris jadwal latihan ini?');">
+                                                <form method="POST" action="{{ route('dashboard.schedules.destroy', $item) }}" data-delete-form data-confirm-title="Hapus Jadwal Latihan" data-confirm-message="Apakah Anda yakin ingin menghapus jadwal latihan hari {{ $item->day_of_week }} ({{ $item->time_slot }} - {{ $item->target_category }})?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>

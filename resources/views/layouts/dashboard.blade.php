@@ -181,5 +181,57 @@
     </div>
 </div>
 
+{{-- Modal Konfirmasi Perubahan Data Dashboard --}}
+<div
+    data-dash-confirm-modal
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dash-confirm-title"
+    aria-hidden="true"
+    class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto bg-navy-950/60 p-4 backdrop-blur-xs"
+>
+    <div class="relative w-full max-w-md rounded-2xl border border-brand/15 bg-white p-6 shadow-2xl sm:p-7">
+        <div class="flex items-start gap-3.5">
+            <div data-dash-confirm-icon-box class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-gold/25 text-brand">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 9v4"/>
+                    <path d="M12 17h.01"/>
+                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+                </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+                <h2 id="dash-confirm-title" data-dash-confirm-title class="font-oswald text-lg font-bold uppercase tracking-wide text-brand">
+                    Konfirmasi Perubahan
+                </h2>
+                <p data-dash-confirm-desc class="mt-1 text-xs leading-relaxed text-navy-900/70 sm:text-sm">
+                    Apakah Anda yakin ingin menyimpan perubahan data ini?
+                </p>
+            </div>
+        </div>
+
+        <div data-dash-confirm-changes-wrap class="mt-4 hidden rounded-xl border border-brand/10 bg-[#f4f7fb] p-3.5">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-brand">Kolom yang Diubah:</p>
+            <ul data-dash-confirm-changes-list class="mt-1.5 list-disc space-y-1 pl-4 text-xs font-medium text-navy-950"></ul>
+        </div>
+
+        <div class="mt-6 flex flex-col-reverse gap-2.5 sm:flex-row sm:justify-end">
+            <button
+                type="button"
+                data-dash-confirm-cancel
+                class="min-h-11 w-full cursor-pointer rounded-xl border border-brand/15 bg-white px-5 py-2.5 text-xs font-semibold text-navy-900 transition hover:bg-[#f4f7fb] sm:w-auto"
+            >
+                Batal
+            </button>
+            <button
+                type="button"
+                data-dash-confirm-accept
+                class="min-h-11 w-full cursor-pointer rounded-xl bg-gold px-5 py-2.5 font-oswald text-xs font-bold uppercase tracking-wider text-brand shadow-xs transition hover:brightness-95 sm:w-auto"
+            >
+                Ya, Simpan Perubahan
+            </button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

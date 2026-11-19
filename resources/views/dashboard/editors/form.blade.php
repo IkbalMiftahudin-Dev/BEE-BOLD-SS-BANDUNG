@@ -12,6 +12,11 @@
 
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.editors.update', $editor) : route('dashboard.editors.store') }}"
+          @if ($isEdit)
+              data-edit-form
+              data-confirm-title="Konfirmasi Perubahan Akun Editor"
+              data-confirm-message="Apakah Anda yakin ingin menyimpan perubahan data akun editor ini?"
+          @endif
           class="max-w-2xl space-y-5 rounded-2xl border border-brand/10 bg-white p-4 shadow-xs sm:p-6">
         @csrf
         @if ($isEdit)

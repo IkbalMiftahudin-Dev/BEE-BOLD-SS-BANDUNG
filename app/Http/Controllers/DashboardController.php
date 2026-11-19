@@ -246,8 +246,8 @@ class DashboardController extends Controller
         return view('dashboard.galleries.index', [
             'galleries' => Gallery::with('uploader')
                 ->orderByDesc('is_highlighted_on_home')
-                ->orderByDesc('created_at')
-                ->orderBy('id')
+                ->orderByDesc('updated_at')
+                ->orderByDesc('id')
                 ->paginate(12),
         ]);
     }
@@ -340,9 +340,10 @@ class DashboardController extends Controller
         return view('dashboard.programs.form', [
             'program' => new AgeProgram([
                 'category_group' => 'Grassroot',
-                'sort_order' => (int) AgeProgram::max('sort_order') + 1,
+                'sort_order' => $this->nextAvailableSortOrder(AgeProgram::class),
                 'is_active' => true,
             ]),
+            'usedSortOrders' => AgeProgram::pluck('sort_order')->map(fn ($v) => (int) $v)->values()->all(),
             'isEdit' => false,
         ]);
     }
@@ -367,6 +368,7 @@ class DashboardController extends Controller
     {
         return view('dashboard.programs.form', [
             'program' => $program,
+            'usedSortOrders' => AgeProgram::whereKeyNot($program->id)->pluck('sort_order')->map(fn ($v) => (int) $v)->values()->all(),
             'isEdit' => true,
         ]);
     }
@@ -402,7 +404,11 @@ class DashboardController extends Controller
     {
         return view('dashboard.schedules.index', [
             'schedulesByDay' => TrainingSchedule::with('ageProgram')
-                ->orderBy('id')
+                ->leftJoin('age_programs', 'age_programs.id', '=', 'training_schedules.age_program_id')
+                ->select('training_schedules.*')
+                ->orderByRaw('age_programs.sort_order IS NULL')
+                ->orderBy('age_programs.sort_order')
+                ->orderBy('training_schedules.id')
                 ->get()
                 ->groupBy('day_of_week'),
             'days' => array_keys(TrainingSchedule::DAYS),
@@ -473,9 +479,10 @@ class DashboardController extends Controller
     {
         return view('dashboard.faqs.form', [
             'faq' => new Faq([
-                'sort_order' => (int) Faq::max('sort_order') + 1,
+                'sort_order' => $this->nextAvailableSortOrder(Faq::class),
                 'is_active' => true,
             ]),
+            'usedSortOrders' => Faq::pluck('sort_order')->map(fn ($v) => (int) $v)->values()->all(),
             'isEdit' => false,
         ]);
     }
@@ -492,13 +499,14 @@ class DashboardController extends Controller
     {
         return view('dashboard.faqs.form', [
             'faq' => $faq,
+            'usedSortOrders' => Faq::whereKeyNot($faq->id)->pluck('sort_order')->map(fn ($v) => (int) $v)->values()->all(),
             'isEdit' => true,
         ]);
     }
 
     public function faqsUpdate(Request $request, Faq $faq): RedirectResponse
     {
-        $validated = $this->validateFaq($request);
+        $validated = $this->validateFaq($request, $faq);
         $faq->update($validated);
 
         return redirect()->route('dashboard.faqs.index')->with('status', 'Item FAQ berhasil diperbarui.');
@@ -527,9 +535,10 @@ class DashboardController extends Controller
         return view('dashboard.fees.form', [
             'fee' => new RegistrationFee([
                 'fee_type' => RegistrationFee::TYPE_MONTHLY,
-                'sort_order' => (int) RegistrationFee::max('sort_order') + 1,
+                'sort_order' => $this->nextAvailableSortOrder(RegistrationFee::class),
                 'is_active' => true,
             ]),
+            'usedSortOrders' => RegistrationFee::pluck('sort_order')->map(fn ($v) => (int) $v)->values()->all(),
             'isEdit' => false,
         ]);
     }
@@ -546,13 +555,14 @@ class DashboardController extends Controller
     {
         return view('dashboard.fees.form', [
             'fee' => $fee,
+            'usedSortOrders' => RegistrationFee::whereKeyNot($fee->id)->pluck('sort_order')->map(fn ($v) => (int) $v)->values()->all(),
             'isEdit' => true,
         ]);
     }
 
     public function feesUpdate(Request $request, RegistrationFee $fee): RedirectResponse
     {
-        $validated = $this->validateFee($request);
+        $validated = $this->validateFee($request, $fee);
         $fee->update($validated);
 
         return redirect()->route('dashboard.fees.index')->with('status', 'Komponen biaya pendaftaran berhasil diperbarui.');
@@ -783,9 +793,18 @@ class DashboardController extends Controller
             'age_range' => ['required', 'string', 'max:50'],
             'coach_name' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'sort_order' => ['required', 'integer', 'min:0', 'max:999'],
+            'sort_order' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:999',
+                Rule::unique('age_programs', 'sort_order')->ignore($existing?->id),
+            ],
             'image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'image_url' => ['nullable', 'string', 'max:255'],
+        ], [
+            'sort_order.unique' => 'Nomor urutan tampil ini sudah digunakan oleh program usia lain. Silakan pilih nomor urutan yang berbeda.',
+            'sort_order.min' => 'Nomor urutan tampil minimal 1.',
         ]);
 
         return [
@@ -826,12 +845,21 @@ class DashboardController extends Controller
     /**
      * @return array<string, mixed>
      */
-    private function validateFaq(Request $request): array
+    private function validateFaq(Request $request, ?Faq $existing = null): array
     {
         $validated = $request->validate([
             'question' => ['required', 'string', 'max:255'],
             'answer' => ['required', 'string', 'max:3000'],
-            'sort_order' => ['required', 'integer', 'min:0', 'max:999'],
+            'sort_order' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:999',
+                Rule::unique('faqs', 'sort_order')->ignore($existing?->id),
+            ],
+        ], [
+            'sort_order.unique' => 'Nomor urutan tampil ini sudah digunakan oleh pertanyaan FAQ lain. Silakan pilih nomor urutan yang berbeda.',
+            'sort_order.min' => 'Nomor urutan tampil minimal 1.',
         ]);
 
         return [
@@ -845,13 +873,22 @@ class DashboardController extends Controller
     /**
      * @return array<string, mixed>
      */
-    private function validateFee(Request $request): array
+    private function validateFee(Request $request, ?RegistrationFee $existing = null): array
     {
         $validated = $request->validate([
             'label' => ['required', 'string', 'max:100'],
             'amount_text' => ['required', 'string', 'max:100'],
             'fee_type' => ['required', Rule::in([RegistrationFee::TYPE_ONE_TIME, RegistrationFee::TYPE_MONTHLY])],
-            'sort_order' => ['required', 'integer', 'min:0', 'max:999'],
+            'sort_order' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:999',
+                Rule::unique('registration_fees', 'sort_order')->ignore($existing?->id),
+            ],
+        ], [
+            'sort_order.unique' => 'Nomor urutan tampil ini sudah digunakan oleh komponen biaya lain. Silakan pilih nomor urutan yang berbeda.',
+            'sort_order.min' => 'Nomor urutan tampil minimal 1.',
         ]);
 
         return [
@@ -861,6 +898,24 @@ class DashboardController extends Controller
             'sort_order' => (int) $validated['sort_order'],
             'is_active' => $request->boolean('is_active'),
         ];
+    }
+
+    private function nextAvailableSortOrder(string $modelClass): int
+    {
+        $usedOrders = array_flip(
+            $modelClass::query()
+                ->pluck('sort_order')
+                ->map(fn ($value): int => (int) $value)
+                ->filter(fn (int $value): bool => $value >= 1)
+                ->all()
+        );
+
+        $candidate = 1;
+        while (isset($usedOrders[$candidate])) {
+            $candidate++;
+        }
+
+        return $candidate;
     }
 
     /**

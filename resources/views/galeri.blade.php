@@ -52,7 +52,7 @@
                                     data-gallery-title="{{ $photo->title }}"
                                     data-gallery-caption="{{ $photo->caption }}"
                                     class="group relative block w-full cursor-pointer overflow-hidden rounded-xl text-left focus:outline-none">
-                                    <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy" class="{{ $ratioHeight($photo->grid_ratio) }} w-full object-cover transition duration-500 group-hover:scale-105">
+                                    <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy" referrerpolicy="no-referrer" class="{{ $ratioHeight($photo->grid_ratio) }} w-full object-cover transition duration-500 group-hover:scale-105">
                                     <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100"></div>
                                     <div class="absolute inset-x-0 bottom-0 p-4 opacity-0 transition duration-300 group-hover:opacity-100">
                                         <p class="font-oswald text-sm font-bold uppercase tracking-wide text-white">{{ $photo->title }}</p>

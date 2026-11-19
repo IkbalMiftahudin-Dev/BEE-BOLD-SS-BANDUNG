@@ -5,7 +5,7 @@
         </svg>
     </button>
     <figure class="flex max-h-full w-full max-w-5xl flex-col items-center">
-        <img data-gallery-img src="" alt="" class="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl ring-1 ring-white/15">
+        <img data-gallery-img alt="" referrerpolicy="no-referrer" class="min-h-[120px] max-h-[75vh] w-auto max-w-full rounded-2xl bg-navy-900/60 object-contain shadow-2xl ring-1 ring-white/15">
         <figcaption class="w-full max-w-2xl px-2 pt-4 text-center">
             <p data-gallery-title class="font-oswald text-lg font-bold uppercase tracking-wide text-white md:text-xl"></p>
             <p data-gallery-caption class="pt-1 text-sm leading-relaxed text-white/60"></p>

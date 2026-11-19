@@ -13,6 +13,12 @@
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.news.update', $article) : route('dashboard.news.store') }}"
           enctype="multipart/form-data"
+          @if ($isEdit)
+              data-edit-form
+              data-has-existing-media="{{ $article->thumbnail_path ? 'true' : 'false' }}"
+              data-confirm-title="Konfirmasi Perubahan Berita"
+              data-confirm-message="Pastikan judul, isi berita, kategori, dan foto sudah sesuai sebelum menyimpan perubahan."
+          @endif
           class="grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-12">
         @csrf
         @if ($isEdit)

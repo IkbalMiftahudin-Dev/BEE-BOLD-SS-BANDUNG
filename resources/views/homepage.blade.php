@@ -396,10 +396,10 @@
             @if ($highlightedGalleries->isNotEmpty())
                 <div class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach ($highlightedGalleries as $idx => $photo)
-                        <button type="button" data-gallery-item="{{ $photo->image_url }}" data-reveal class="reveal-delay-{{ ($idx % 3) + 1 }} group relative h-[260px] w-full cursor-pointer overflow-hidden rounded-2xl text-left focus:outline-none"
+                        <button type="button" data-gallery-item="{{ $photo->image_url }}" data-reveal class="reveal-delay-{{ ($idx % 3) + 1 }} group relative block h-[260px] w-full cursor-pointer overflow-hidden rounded-2xl bg-navy-900 text-left focus:outline-none"
                             data-gallery-title="{{ $photo->title }}" data-gallery-caption="{{ $photo->caption }}">
-                            <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy"
-                                class="size-full object-cover transition duration-500 group-hover:scale-105">
+                            <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy" referrerpolicy="no-referrer"
+                                class="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-transparent opacity-0 transition duration-300 group-hover:opacity-100">
                             </div>
@@ -443,7 +443,7 @@
                             <button type="button" data-faq-btn
                                 class="flex min-h-[72px] w-full items-center gap-5 py-6 text-left">
                                 <span class="font-oswald text-xs tracking-[1.2px] text-white/25"
-                                    data-faq-num>{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                                    data-faq-num>{{ str_pad((string) $faq->sort_order, 2, '0', STR_PAD_LEFT) }}</span>
                                 <span
                                     class="flex-1 font-oswald text-xl font-semibold uppercase tracking-[.5px] text-white/70"
                                     data-faq-q>{{ $faq->question }}</span>
@@ -471,26 +471,35 @@
                 <h2 class="pt-4 font-oswald text-6xl font-bold uppercase leading-none">Bergabung <span
                         class="text-gold">Bersama</span> Kami</h2>
 
+                @php
+                    $renderedFeeGroups = $feeGroups ?? collect();
+                @endphp
                 <div class="py-8">
-                    @foreach ($oneTimeFees as $fee)
-                        <div class="{{ $loop->first ? '' : 'mt-4' }}">
-                            <p class="text-xs uppercase tracking-[.3px] text-white/40">{{ $fee->label }}</p>
-                            <p class="font-semibold">{{ $fee->amount_text }}</p>
-                        </div>
+                    @foreach ($renderedFeeGroups as $group)
+                        @php $groupType = $group->first()?->fee_type; @endphp
+                        @if (! $loop->first)
+                            <hr class="mt-4 border-white/10">
+                        @endif
+                        @if ($groupType === \App\Models\RegistrationFee::TYPE_ONE_TIME)
+                            <div class="{{ $loop->first ? '' : 'mt-5' }}">
+                                @foreach ($group as $fee)
+                                    <div class="{{ $loop->first ? '' : 'mt-4' }}">
+                                        <p class="text-xs uppercase tracking-[.3px] text-white/40">{{ $fee->label }}</p>
+                                        <p class="font-semibold">{{ $fee->amount_text }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="{{ $loop->first ? '' : 'mt-6' }} grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-12">
+                                @foreach ($group as $fee)
+                                    <div>
+                                        <p class="text-xs uppercase tracking-[.3px] text-white/40">{{ $fee->label }}</p>
+                                        <p class="pt-1 font-semibold">{{ $fee->amount_text }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     @endforeach
-                    @if ($oneTimeFees->isNotEmpty() && $monthlyFees->isNotEmpty())
-                        <hr class="mt-2 border-white/10">
-                    @endif
-                    @if ($monthlyFees->isNotEmpty())
-                        <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-12">
-                            @foreach ($monthlyFees as $fee)
-                                <div>
-                                    <p class="text-xs uppercase tracking-[.3px] text-white/40">{{ $fee->label }}</p>
-                                    <p class="pt-1 font-semibold">{{ $fee->amount_text }}</p>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">

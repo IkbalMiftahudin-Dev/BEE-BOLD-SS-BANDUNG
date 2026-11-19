@@ -35,7 +35,7 @@
                 </div>
                 <div class="flex shrink-0 items-center gap-2 self-end sm:self-center">
                     <a href="{{ route('dashboard.faqs.edit', $faq) }}" class="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                    <form method="POST" action="{{ route('dashboard.faqs.destroy', $faq) }}" onsubmit="return confirm('Hapus item FAQ ini?');">
+                    <form method="POST" action="{{ route('dashboard.faqs.destroy', $faq) }}" data-delete-form data-confirm-title="Hapus Pertanyaan FAQ" data-confirm-message="Apakah Anda yakin ingin menghapus pertanyaan FAQ &quot;{{ $faq->question }}&quot;?">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>

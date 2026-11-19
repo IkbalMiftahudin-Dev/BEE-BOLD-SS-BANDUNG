@@ -54,7 +54,7 @@
                     <div class="flex shrink-0 items-center gap-1.5">
                         <a href="{{ route('berita.show', $item->slug) }}" target="_blank" rel="noopener" class="rounded-lg border border-brand/15 bg-white px-2.5 py-1.5 text-xs font-medium text-brand hover:bg-[#eaf2fb]">Lihat</a>
                         <a href="{{ route('dashboard.news.edit', $item) }}" class="rounded-lg bg-brand px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                        <form method="POST" action="{{ route('dashboard.news.destroy', $item) }}" onsubmit="return confirm('Hapus artikel berita ini secara permanen?');">
+                        <form method="POST" action="{{ route('dashboard.news.destroy', $item) }}" data-delete-form data-confirm-title="Hapus Artikel Berita" data-confirm-message="Apakah Anda yakin ingin menghapus artikel berita &quot;{{ $item->title }}&quot; secara permanen?">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-2.5 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>
@@ -117,7 +117,7 @@
                                 <div class="inline-flex items-center gap-2">
                                     <a href="{{ route('berita.show', $item->slug) }}" target="_blank" rel="noopener" class="rounded-lg border border-brand/15 bg-white px-3 py-1.5 text-xs font-medium text-brand hover:bg-[#eaf2fb]">Lihat</a>
                                     <a href="{{ route('dashboard.news.edit', $item) }}" class="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                                    <form method="POST" action="{{ route('dashboard.news.destroy', $item) }}" onsubmit="return confirm('Hapus artikel berita ini secara permanen?');">
+                                    <form method="POST" action="{{ route('dashboard.news.destroy', $item) }}" data-delete-form data-confirm-title="Hapus Artikel Berita" data-confirm-message="Apakah Anda yakin ingin menghapus artikel berita &quot;{{ $item->title }}&quot; secara permanen?">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>

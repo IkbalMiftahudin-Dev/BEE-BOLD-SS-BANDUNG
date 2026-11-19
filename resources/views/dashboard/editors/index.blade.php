@@ -46,7 +46,7 @@
                     <span class="text-[11px] text-navy-900/45">Terdaftar {{ $editor->created_at?->locale('id')->translatedFormat('d M Y') }}</span>
                     <div class="inline-flex items-center gap-1.5">
                         <a href="{{ route('dashboard.editors.edit', $editor) }}" class="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                        <form method="POST" action="{{ route('dashboard.editors.destroy', $editor) }}" onsubmit="return confirm('Hapus akun editor {{ $editor->name }}? Seluruh berita dan foto galeri yang diunggah editor ini akan tetap aman dan dialihkan ke akun Admin Anda.');">
+                        <form method="POST" action="{{ route('dashboard.editors.destroy', $editor) }}" data-delete-form data-confirm-title="Hapus Akun Editor" data-confirm-message="Hapus akun editor &quot;{{ $editor->name }}&quot;? Seluruh berita dan foto galeri yang diunggah editor ini akan tetap aman dan dialihkan ke akun Admin Anda.">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>
@@ -100,7 +100,7 @@
                             <td class="px-5 py-4 text-right">
                                 <div class="inline-flex items-center gap-2">
                                     <a href="{{ route('dashboard.editors.edit', $editor) }}" class="rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-900">Edit</a>
-                                    <form method="POST" action="{{ route('dashboard.editors.destroy', $editor) }}" onsubmit="return confirm('Hapus akun editor {{ $editor->name }}? Seluruh berita dan foto galeri yang diunggah editor ini akan tetap aman dan dialihkan ke akun Admin Anda.');">
+                                    <form method="POST" action="{{ route('dashboard.editors.destroy', $editor) }}" data-delete-form data-confirm-title="Hapus Akun Editor" data-confirm-message="Hapus akun editor &quot;{{ $editor->name }}&quot;? Seluruh berita dan foto galeri yang diunggah editor ini akan tetap aman dan dialihkan ke akun Admin Anda.">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="cursor-pointer rounded-lg border border-[#f87171]/40 bg-[#fce8e6] px-3 py-1.5 text-xs font-semibold text-[#c5221f] hover:bg-[#f87171]/25">Hapus</button>
