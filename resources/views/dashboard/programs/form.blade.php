@@ -13,6 +13,8 @@
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.programs.update', $program) : route('dashboard.programs.store') }}"
           enctype="multipart/form-data"
+          data-preview-type="program"
+          data-existing-image="{{ $isEdit && $program->image_url ? $program->image_url : '' }}"
           @if ($isEdit)
               data-edit-form
               data-has-existing-media="{{ $program->image_path ? 'true' : 'false' }}"
@@ -85,9 +87,15 @@
             <span class="text-xs font-semibold text-navy-950">Tampilkan Program Ini di Beranda</span>
         </label>
 
-        <button type="submit" class="min-h-12 w-full cursor-pointer rounded-xl bg-gold py-3.5 font-oswald text-sm font-bold uppercase tracking-wider text-brand transition hover:brightness-95">
-            {{ $isEdit ? 'Simpan Perubahan Program' : 'Simpan Program Usia' }}
-        </button>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <button type="button" data-preview-trigger class="inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-brand/20 bg-[#eaf2fb] px-5 py-3 font-oswald text-sm font-bold uppercase tracking-wider text-brand transition hover:bg-brand hover:text-white">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                Preview Tampilan
+            </button>
+            <button type="submit" class="min-h-12 w-full cursor-pointer rounded-xl bg-gold py-3.5 font-oswald text-sm font-bold uppercase tracking-wider text-brand transition hover:brightness-95">
+                {{ $isEdit ? 'Simpan Perubahan Program' : 'Simpan Program Usia' }}
+            </button>
+        </div>
     </form>
 @endsection
 

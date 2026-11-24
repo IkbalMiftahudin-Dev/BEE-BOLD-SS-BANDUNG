@@ -9,15 +9,21 @@
             <h2 class="font-oswald text-lg font-bold uppercase tracking-wide text-brand">Tambah Kategori Baru</h2>
             <p class="mt-1 text-xs text-navy-900/55">Slug URL dibuat secara otomatis dari nama kategori.</p>
 
-            <form method="POST" action="{{ route('dashboard.categories.store') }}" class="mt-5 space-y-4">
+            <form method="POST" action="{{ route('dashboard.categories.store') }}" data-preview-type="category" class="mt-5 space-y-4">
                 @csrf
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-brand">Nama Kategori <span class="text-[#c5221f]">*</span></label>
                     <input type="text" name="name" value="{{ old('name') }}" required maxlength="50" placeholder="Contoh: Prestasi" class="mt-1.5 min-h-11 w-full rounded-xl border border-brand/15 bg-[#f4f7fb] px-4 py-2.5 text-sm text-navy-950 outline-none focus:border-brand focus:bg-white">
                 </div>
-                <button type="submit" class="min-h-11 w-full cursor-pointer rounded-xl bg-gold py-2.5 font-oswald text-xs font-bold uppercase tracking-wider text-brand transition hover:brightness-95">
-                    + Simpan Kategori
-                </button>
+                <div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-1">
+                    <button type="button" data-preview-trigger class="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-brand/20 bg-[#eaf2fb] px-4 py-2.5 font-oswald text-xs font-bold uppercase tracking-wider text-brand transition hover:bg-brand hover:text-white">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Preview Tampilan
+                    </button>
+                    <button type="submit" class="min-h-11 w-full cursor-pointer rounded-xl bg-gold py-2.5 font-oswald text-xs font-bold uppercase tracking-wider text-brand transition hover:brightness-95">
+                        + Simpan Kategori
+                    </button>
+                </div>
             </form>
         </div>
 

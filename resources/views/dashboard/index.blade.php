@@ -30,7 +30,7 @@
     </div>
 
     {{-- Statistik Kartu --}}
-    <div class="mt-5 grid grid-cols-2 gap-3 sm:mt-6 sm:gap-4 {{ auth()->user()->isAdmin() ? 'lg:grid-cols-4' : 'sm:grid-cols-3' }}">
+    <div class="mt-5 grid grid-cols-2 gap-3 sm:mt-6 sm:gap-4 {{ auth()->user()->isAdmin() ? 'lg:grid-cols-4' : '' }}">
         <a href="{{ route('dashboard.news.index') }}" class="group rounded-2xl border border-brand/10 bg-white p-4 shadow-xs transition hover:border-brand/30 hover:shadow-md sm:p-5">
             <div class="flex flex-wrap items-center justify-between gap-1.5">
                 <p class="text-[11px] font-semibold uppercase tracking-wider text-navy-900/55 sm:text-xs">Total Berita</p>
@@ -40,16 +40,18 @@
             <p class="mt-1.5 text-[11px] font-medium text-brand/70 group-hover:text-brand sm:mt-2 sm:text-xs">Kelola berita &rarr;</p>
         </a>
 
-        <a href="{{ route('dashboard.categories.index') }}" class="group rounded-2xl border border-brand/10 bg-white p-4 shadow-xs transition hover:border-brand/30 hover:shadow-md sm:p-5">
-            <div class="flex flex-wrap items-center justify-between gap-1.5">
-                <p class="text-[11px] font-semibold uppercase tracking-wider text-navy-900/55 sm:text-xs">Kategori</p>
-                <span class="rounded-lg bg-sky/25 px-2 py-0.5 font-oswald text-[10px] font-bold text-brand sm:text-xs">Aktif</span>
-            </div>
-            <p class="mt-2.5 font-oswald text-3xl font-bold text-brand sm:mt-3 sm:text-4xl">{{ $stats['categories'] }}</p>
-            <p class="mt-1.5 text-[11px] font-medium text-brand/70 group-hover:text-brand sm:mt-2 sm:text-xs">Kelola kategori &rarr;</p>
-        </a>
+        @if (auth()->user()->isAdmin())
+            <a href="{{ route('dashboard.categories.index') }}" class="group rounded-2xl border border-brand/10 bg-white p-4 shadow-xs transition hover:border-brand/30 hover:shadow-md sm:p-5">
+                <div class="flex flex-wrap items-center justify-between gap-1.5">
+                    <p class="text-[11px] font-semibold uppercase tracking-wider text-navy-900/55 sm:text-xs">Kategori</p>
+                    <span class="rounded-lg bg-sky/25 px-2 py-0.5 font-oswald text-[10px] font-bold text-brand sm:text-xs">Aktif</span>
+                </div>
+                <p class="mt-2.5 font-oswald text-3xl font-bold text-brand sm:mt-3 sm:text-4xl">{{ $stats['categories'] }}</p>
+                <p class="mt-1.5 text-[11px] font-medium text-brand/70 group-hover:text-brand sm:mt-2 sm:text-xs">Kelola kategori &rarr;</p>
+            </a>
+        @endif
 
-        <a href="{{ route('dashboard.galleries.index') }}" class="group rounded-2xl border border-brand/10 bg-white p-4 shadow-xs transition hover:border-brand/30 hover:shadow-md sm:p-5 {{ auth()->user()->isAdmin() ? '' : 'col-span-2 sm:col-span-1' }}">
+        <a href="{{ route('dashboard.galleries.index') }}" class="group rounded-2xl border border-brand/10 bg-white p-4 shadow-xs transition hover:border-brand/30 hover:shadow-md sm:p-5">
             <div class="flex flex-wrap items-center justify-between gap-1.5">
                 <p class="text-[11px] font-semibold uppercase tracking-wider text-navy-900/55 sm:text-xs">Foto Galeri</p>
                 <span class="rounded-lg bg-gold/25 px-2 py-0.5 font-oswald text-[10px] font-bold text-brand sm:text-xs">{{ $stats['galleries_home'] }}/6 Beranda</span>

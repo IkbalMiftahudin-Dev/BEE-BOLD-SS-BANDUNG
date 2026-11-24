@@ -13,6 +13,8 @@
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.galleries.update', $gallery) : route('dashboard.galleries.store') }}"
           enctype="multipart/form-data"
+          data-preview-type="gallery"
+          data-existing-image="{{ $isEdit && $gallery->image_url ? $gallery->image_url : '' }}"
           @if ($isEdit)
               data-edit-form
               data-has-existing-media="{{ $gallery->image_path ? 'true' : 'false' }}"
@@ -70,7 +72,11 @@
             </div>
         </div>
 
-        <div class="pt-2">
+        <div class="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
+            <button type="button" data-preview-trigger class="inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-brand/20 bg-[#eaf2fb] px-5 py-3 font-oswald text-sm font-bold uppercase tracking-wider text-brand transition hover:bg-brand hover:text-white">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                Preview Tampilan
+            </button>
             <button type="submit" class="min-h-12 w-full cursor-pointer rounded-xl bg-gold py-3.5 font-oswald text-sm font-bold uppercase tracking-wider text-brand transition hover:brightness-95">
                 {{ $isEdit ? 'Simpan Perubahan Foto' : 'Simpan Foto ke Galeri' }}
             </button>

@@ -12,6 +12,7 @@
 
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.editors.update', $editor) : route('dashboard.editors.store') }}"
+          data-preview-type="editor"
           @if ($isEdit)
               data-edit-form
               data-confirm-title="Konfirmasi Perubahan Akun Editor"
@@ -62,6 +63,10 @@
             <a href="{{ route('dashboard.editors.index') }}" class="inline-flex min-h-11 items-center justify-center rounded-xl border border-brand/15 bg-white px-5 py-2.5 text-xs font-semibold text-navy-900 hover:bg-[#f4f7fb]">
                 Batal
             </a>
+            <button type="button" data-preview-trigger class="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-brand/20 bg-[#eaf2fb] px-5 py-2.5 font-oswald text-xs font-bold uppercase tracking-wider text-brand transition hover:bg-brand hover:text-white">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                Preview Tampilan
+            </button>
             <button type="submit" class="min-h-11 cursor-pointer rounded-xl bg-gold px-6 py-2.5 font-oswald text-xs font-bold uppercase tracking-wider text-brand shadow-xs transition hover:brightness-95">
                 {{ $isEdit ? 'Simpan Perubahan Editor' : 'Buat Akun Editor' }}
             </button>

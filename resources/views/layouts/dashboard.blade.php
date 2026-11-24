@@ -19,11 +19,11 @@
     $contentLinks = [
         ['label' => 'Ringkasan', 'route' => 'dashboard', 'match' => 'dashboard', 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
         ['label' => 'Berita & Artikel', 'route' => 'dashboard.news.index', 'match' => 'dashboard.news.*', 'icon' => 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z'],
-        ['label' => 'Kategori Berita', 'route' => 'dashboard.categories.index', 'match' => 'dashboard.categories.*', 'icon' => 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
         ['label' => 'Galeri Dokumentasi', 'route' => 'dashboard.galleries.index', 'match' => 'dashboard.galleries.*', 'icon' => 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
     ];
 
     $adminLinks = [
+        ['label' => 'Kategori Berita', 'route' => 'dashboard.categories.index', 'match' => 'dashboard.categories.*', 'icon' => 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
         ['label' => 'Program Usia', 'route' => 'dashboard.programs.index', 'match' => 'dashboard.programs.*', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z'],
         ['label' => 'Jadwal Latihan', 'route' => 'dashboard.schedules.index', 'match' => 'dashboard.schedules.*', 'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
         ['label' => 'Daftar FAQ', 'route' => 'dashboard.faqs.index', 'match' => 'dashboard.faqs.*', 'icon' => 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
@@ -228,6 +228,51 @@
                 class="min-h-11 w-full cursor-pointer rounded-xl bg-gold px-5 py-2.5 font-oswald text-xs font-bold uppercase tracking-wider text-brand shadow-xs transition hover:brightness-95 sm:w-auto"
             >
                 Ya, Simpan Perubahan
+            </button>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Preview Konten Website Sebelum Diunggah --}}
+<div
+    data-dash-preview-modal
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dash-preview-title"
+    aria-hidden="true"
+    class="fixed inset-0 z-[60] hidden items-center justify-center bg-navy-950/80 p-3 backdrop-blur-sm sm:p-6"
+>
+    <div class="relative flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-navy-950 text-white shadow-2xl">
+        <div class="flex shrink-0 items-center justify-between gap-3 border-b border-white/10 bg-[#071326] px-4 py-3.5 sm:px-6">
+            <div class="min-w-0">
+                <span class="inline-block rounded-full bg-gold/20 px-2.5 py-0.5 font-oswald text-[10px] font-bold uppercase tracking-wider text-gold">Mode Pratinjau Website</span>
+                <h2 id="dash-preview-title" data-dash-preview-title class="mt-1 truncate font-oswald text-base font-bold uppercase tracking-wide text-white sm:text-lg">
+                    Preview Tampilan
+                </h2>
+                <p data-dash-preview-subtitle class="truncate text-[11px] text-white/55">
+                    Pratinjau tampilan sebelum data disimpan/diunggah ke website publik.
+                </p>
+            </div>
+            <button
+                type="button"
+                data-dash-preview-close
+                aria-label="Tutup preview"
+                class="flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/75 transition hover:border-gold hover:text-gold"
+            >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div data-dash-preview-body class="flex-1 overflow-y-auto p-4 sm:p-6"></div>
+
+        <div class="flex shrink-0 items-center justify-between gap-3 border-t border-white/10 bg-[#071326] px-4 py-3 sm:px-6">
+            <p class="text-[11px] text-white/50">Tampilan di atas merepresentasikan hasil publikasi di website utama.</p>
+            <button
+                type="button"
+                data-dash-preview-close
+                class="min-h-10 cursor-pointer rounded-xl bg-gold px-5 py-2 font-oswald text-xs font-bold uppercase tracking-wider text-brand transition hover:brightness-95"
+            >
+                Tutup Preview
             </button>
         </div>
     </div>

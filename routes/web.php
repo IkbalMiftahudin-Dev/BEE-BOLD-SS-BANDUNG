@@ -49,12 +49,6 @@ Route::middleware('auth')->group(function () {
             Route::put('/berita/{news}', 'newsUpdate')->name('dashboard.news.update');
             Route::delete('/berita/{news}', 'newsDestroy')->name('dashboard.news.destroy');
 
-            // Kategori Berita (Admin & Editor)
-            Route::get('/kategori-berita', 'categoriesIndex')->name('dashboard.categories.index');
-            Route::post('/kategori-berita', 'categoriesStore')->name('dashboard.categories.store');
-            Route::put('/kategori-berita/{category}', 'categoriesUpdate')->name('dashboard.categories.update');
-            Route::delete('/kategori-berita/{category}', 'categoriesDestroy')->name('dashboard.categories.destroy');
-
             // Galeri (Admin & Editor)
             Route::get('/galeri', 'galleriesIndex')->name('dashboard.galleries.index');
             Route::get('/galeri/tambah', 'galleriesCreate')->name('dashboard.galleries.create');
@@ -63,8 +57,13 @@ Route::middleware('auth')->group(function () {
             Route::put('/galeri/{gallery}', 'galleriesUpdate')->name('dashboard.galleries.update');
             Route::delete('/galeri/{gallery}', 'galleriesDestroy')->name('dashboard.galleries.destroy');
 
-            // Khusus Admin (Program, Jadwal, FAQ, Biaya Pendaftaran, Kelola Editor, Pengaturan Profil Admin)
+            // Khusus Admin (Kategori Berita, Program, Jadwal, FAQ, Biaya Pendaftaran, Kelola Editor, Pengaturan Profil Admin)
             Route::middleware('role:admin')->group(function () {
+                Route::get('/kategori-berita', 'categoriesIndex')->name('dashboard.categories.index');
+                Route::post('/kategori-berita', 'categoriesStore')->name('dashboard.categories.store');
+                Route::put('/kategori-berita/{category}', 'categoriesUpdate')->name('dashboard.categories.update');
+                Route::delete('/kategori-berita/{category}', 'categoriesDestroy')->name('dashboard.categories.destroy');
+
                 Route::get('/profil', 'profileEdit')->name('dashboard.profile.edit');
                 Route::put('/profil', 'profileUpdate')->name('dashboard.profile.update');
                 Route::get('/program', 'programsIndex')->name('dashboard.programs.index');

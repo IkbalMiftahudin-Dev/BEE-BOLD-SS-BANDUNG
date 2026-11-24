@@ -811,6 +811,467 @@ document.querySelectorAll('main form').forEach((form) => {
     });
 });
 
+// Dashboard Preview Modal: Pratinjau tampilan website sebelum unggah/simpan
+const dashPreviewModal = document.querySelector('[data-dash-preview-modal]');
+const dashPreviewTitle = dashPreviewModal?.querySelector('[data-dash-preview-title]');
+const dashPreviewSubtitle = dashPreviewModal?.querySelector('[data-dash-preview-subtitle]');
+const dashPreviewBody = dashPreviewModal?.querySelector('[data-dash-preview-body]');
+
+if (dashPreviewModal && dashPreviewBody) {
+    let activePreviewObjectUrls = [];
+
+    const revokePreviewObjectUrls = () => {
+        activePreviewObjectUrls.forEach((url) => URL.revokeObjectURL(url));
+        activePreviewObjectUrls = [];
+    };
+
+    const escapePreviewHtml = (value) =>
+        String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+
+    const sanitizePreviewImageUrl = (rawUrl) => {
+        const trimmed = String(rawUrl ?? '').trim();
+        if (!trimmed) return '';
+        if (/^(https?:\/\/|blob:|\/?images\/)/i.test(trimmed)) {
+            if (/^images\//i.test(trimmed)) {
+                return `/${trimmed}`;
+            }
+            return trimmed;
+        }
+        return '';
+    };
+
+    const resolvePreviewImage = (form, fileFieldName, urlFieldName) => {
+        const fileInput = form.querySelector(`input[type="file"][name="${fileFieldName}"]`);
+        if (fileInput?.files && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const blobUrl = URL.createObjectURL(file);
+                activePreviewObjectUrls.push(blobUrl);
+                return blobUrl;
+            }
+        }
+        const urlInput = form.querySelector(`input[name="${urlFieldName}"]`);
+        const typedUrl = sanitizePreviewImageUrl(urlInput?.value || '');
+        if (typedUrl) return typedUrl;
+
+        return sanitizePreviewImageUrl(form.dataset.existingImage || '');
+    };
+
+    const getCategoryBadgeClass = (slug) => {
+        switch (slug) {
+            case 'prestasi':
+                return 'bg-gold';
+            case 'rekrutmen':
+                return 'bg-sky';
+            case 'pelatihan':
+                return 'bg-[#4ade80]';
+            case 'fasilitas':
+                return 'bg-[#f87171]';
+            case 'komunitas':
+                return 'bg-[#c084fc]';
+            default:
+                return 'bg-white/80';
+        }
+    };
+
+    const slugifyPreview = (text) =>
+        String(text ?? '')
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+
+    const formatPreviewDateWib = () => {
+        try {
+            return (
+                new Intl.DateTimeFormat('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZone: 'Asia/Jakarta',
+                }).format(new Date()) + ' WIB'
+            );
+        } catch {
+            return 'Baru saja (WIB)';
+        }
+    };
+
+    const closeDashPreviewModal = () => {
+        dashPreviewModal.classList.add('hidden');
+        dashPreviewModal.classList.remove('flex');
+        dashPreviewModal.setAttribute('aria-hidden', 'true');
+        dashPreviewBody.innerHTML = '';
+        revokePreviewObjectUrls();
+        document.body.classList.remove('overflow-hidden');
+    };
+
+    const renderPlaceholderImg = (heightClass, label = 'Belum ada gambar dipilih') => `
+        <div class="flex ${heightClass} w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 bg-[#001A33] text-center text-xs text-white/45">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            <span>${escapePreviewHtml(label)}</span>
+        </div>
+    `;
+
+    const buildNewsPreview = (form) => {
+        const title = (form.querySelector('input[name="title"]')?.value || '').trim() || 'Judul Berita Belum Diisi';
+        const lead = (form.querySelector('textarea[name="lead_paragraph"]')?.value || '').trim() || 'Paragraf pembuka berita akan tampil di bagian ini.';
+        const content = (form.querySelector('textarea[name="content"]')?.value || '').trim() || 'Isi lengkap artikel berita akan tampil di sini setelah Anda menuliskannya.';
+        const catSelect = form.querySelector('select[name="category_id"]');
+        const selectedOption = catSelect?.options?.[catSelect.selectedIndex];
+        const catName = selectedOption && selectedOption.value ? selectedOption.textContent.trim() : 'Kategori';
+        const catSlug = selectedOption?.dataset?.slug || '';
+        const badgeColor = getCategoryBadgeClass(catSlug);
+        const isFeatured = Boolean(form.querySelector('input[name="is_featured"]')?.checked);
+        const isPublished = Boolean(form.querySelector('input[name="is_published"]')?.checked);
+        const authorName = form.dataset.authorName || 'Tim Redaksi Bee Bold';
+        const dateLabel = formatPreviewDateWib();
+        const imgUrl = resolvePreviewImage(form, 'thumbnail_file', 'thumbnail_url');
+
+        const paragraphsHtml = content
+            .split(/\r?\n\s*\r?\n/)
+            .map((p) => p.trim())
+            .filter(Boolean)
+            .map((p) => `<p>${escapePreviewHtml(p).replace(/\r?\n/g, '<br>')}</p>`)
+            .join('');
+
+        const homeCardHtml = isFeatured
+            ? `
+                <div class="group relative block min-h-[320px] overflow-hidden rounded-2xl bg-[#001A33]">
+                    ${imgUrl ? `<img src="${escapePreviewHtml(imgUrl)}" alt="${escapePreviewHtml(title)}" referrerpolicy="no-referrer" class="absolute inset-0 size-full object-cover opacity-70">` : ''}
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#001428] via-[#001428]/50 to-transparent"></div>
+                    <span class="${badgeColor} absolute left-4 top-[18px] rounded-full px-3 py-1 text-xs font-bold text-brand">${escapePreviewHtml(catName)}</span>
+                    <div class="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                        <p class="text-xs text-white/40">${escapePreviewHtml(dateLabel)}</p>
+                        <h3 class="pt-2 font-oswald text-2xl font-bold uppercase leading-tight text-white sm:text-3xl">${escapePreviewHtml(title)}</h3>
+                        <p class="pt-2 text-sm leading-[1.625] text-white/60">${escapePreviewHtml(lead)}</p>
+                    </div>
+                </div>
+            `
+            : `
+                <div class="flex min-h-36 overflow-hidden rounded-2xl border border-white/10 bg-[#001A33]">
+                    ${imgUrl ? `<img src="${escapePreviewHtml(imgUrl)}" alt="${escapePreviewHtml(title)}" referrerpolicy="no-referrer" class="w-32 shrink-0 object-cover sm:w-40">` : `<div class="flex w-32 shrink-0 items-center justify-center bg-navy-900 text-[11px] text-white/35 sm:w-40">No Foto</div>`}
+                    <div class="flex flex-1 flex-col justify-center px-5 py-4">
+                        <div class="pb-2"><span class="rounded bg-sky/15 px-2 py-0.5 text-xs font-medium text-sky">${escapePreviewHtml(catName)}</span></div>
+                        <h3 class="font-oswald text-lg font-bold uppercase leading-snug text-white">${escapePreviewHtml(title)}</h3>
+                        <p class="pt-1 text-xs text-white/40">${escapePreviewHtml(dateLabel)}</p>
+                    </div>
+                </div>
+            `;
+
+        return {
+            title: 'Preview Berita & Artikel',
+            subtitle: `Status: ${isPublished ? 'Publik' : 'Draft'} • ${isFeatured ? 'Highlight Berita Utama' : 'Kartu Berita Reguler'}`,
+            html: `
+                <div class="space-y-6">
+                    <div>
+                        <p class="mb-2.5 text-[11px] font-bold uppercase tracking-[1.2px] text-gold">— Tampilan Kartu di Beranda</p>
+                        ${homeCardHtml}
+                    </div>
+                    <div>
+                        <p class="mb-2.5 text-[11px] font-bold uppercase tracking-[1.2px] text-sky">— Tampilan Halaman Detail Berita</p>
+                        <div class="overflow-hidden rounded-2xl border border-white/10 bg-navy-950">
+                            <div class="relative flex min-h-[260px] items-end overflow-hidden px-6 pb-8 pt-16 sm:min-h-[320px]">
+                                ${imgUrl ? `<img src="${escapePreviewHtml(imgUrl)}" alt="${escapePreviewHtml(title)}" referrerpolicy="no-referrer" class="absolute inset-0 size-full object-cover">` : ''}
+                                <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/65 to-navy-950/20"></div>
+                                <div class="relative w-full">
+                                    <span class="${badgeColor} inline-block rounded-full px-3 py-1 font-oswald text-xs font-bold text-brand">${escapePreviewHtml(catName)}</span>
+                                    <h3 class="max-w-3xl pt-3 font-oswald text-2xl font-bold uppercase leading-tight text-white sm:text-4xl">${escapePreviewHtml(title)}</h3>
+                                    <div class="flex items-center gap-2.5 pt-4 text-xs text-white/50">
+                                        <span class="flex size-5 items-center justify-center rounded-full bg-gold text-[8px] font-bold text-brand">BB</span>
+                                        <span>${escapePreviewHtml(authorName)}</span><span>·</span><span>${escapePreviewHtml(dateLabel)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-5 p-6 sm:p-8">
+                                <p class="border-l-2 border-gold py-1 pl-4 text-base leading-7 text-white/85 sm:text-lg">${escapePreviewHtml(lead)}</p>
+                                <div class="space-y-4 text-sm leading-7 text-white/70 sm:text-[15px]">${paragraphsHtml}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+        };
+    };
+
+    const buildGalleryPreview = (form) => {
+        const title = (form.querySelector('input[name="title"]')?.value || '').trim() || 'Judul Dokumentasi Galeri';
+        const caption = (form.querySelector('textarea[name="caption"]')?.value || '').trim();
+        const ratio = form.querySelector('select[name="grid_ratio"]')?.value || 'landscape';
+        const isHome = Boolean(form.querySelector('input[name="is_highlighted_on_home"]')?.checked);
+        const imgUrl = resolvePreviewImage(form, 'image_file', 'image_url');
+
+        const ratioHeight = ratio === 'portrait' ? 'h-[340px]' : ratio === 'square' ? 'h-[260px]' : 'h-[210px]';
+        const ratioLabel = ratio === 'portrait' ? 'Portrait (Tegak)' : ratio === 'square' ? 'Square (Persegi)' : 'Landscape (Mendatar)';
+
+        return {
+            title: 'Preview Foto Galeri',
+            subtitle: `Rasio: ${ratioLabel} • ${isHome ? 'Tampil di 6 Momen Terbaik Beranda' : 'Hanya di Halaman Semua Galeri'}`,
+            html: `
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <div>
+                        <p class="mb-2.5 text-[11px] font-bold uppercase tracking-[1.2px] text-gold">— Tampilan Kartu di Website (${escapePreviewHtml(ratioLabel)})</p>
+                        <div class="group relative block ${ratioHeight} w-full overflow-hidden rounded-2xl bg-navy-900">
+                            ${imgUrl ? `<img src="${escapePreviewHtml(imgUrl)}" alt="${escapePreviewHtml(title)}" referrerpolicy="no-referrer" class="absolute inset-0 size-full object-cover">` : renderPlaceholderImg(ratioHeight)}
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/20 to-transparent"></div>
+                            <div class="absolute inset-x-0 bottom-0 p-5">
+                                <p class="font-oswald text-base font-bold uppercase tracking-wide text-white">${escapePreviewHtml(title)}</p>
+                                ${caption ? `<p class="line-clamp-2 pt-1 text-xs leading-relaxed text-white/75">${escapePreviewHtml(caption)}</p>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-2.5 text-[11px] font-bold uppercase tracking-[1.2px] text-sky">— Tampilan Lightbox Saat Diklik</p>
+                        <div class="flex flex-col items-center rounded-2xl border border-white/10 bg-[#071326] p-4 text-center">
+                            ${imgUrl ? `<img src="${escapePreviewHtml(imgUrl)}" alt="${escapePreviewHtml(title)}" referrerpolicy="no-referrer" class="max-h-[280px] w-auto max-w-full rounded-xl object-contain shadow-xl ring-1 ring-white/15">` : renderPlaceholderImg('h-[210px]')}
+                            <p class="pt-3.5 font-oswald text-lg font-bold uppercase tracking-wide text-white">${escapePreviewHtml(title)}</p>
+                            ${caption ? `<p class="pt-1 text-xs leading-relaxed text-white/65">${escapePreviewHtml(caption)}</p>` : '<p class="pt-1 text-xs italic text-white/35">Tanpa caption</p>'}
+                        </div>
+                    </div>
+                </div>
+            `,
+        };
+    };
+
+    const buildProgramPreview = (form) => {
+        const title = (form.querySelector('input[name="title"]')?.value || '').trim() || 'Nama Program Usia';
+        const ageRange = (form.querySelector('input[name="age_range"]')?.value || '').trim() || 'U-7 – U-9';
+        const group = form.querySelector('select[name="category_group"]')?.value || 'Grassroot';
+        const coach = (form.querySelector('input[name="coach_name"]')?.value || '').trim() || 'Nama Pelatih';
+        const desc = (form.querySelector('textarea[name="description"]')?.value || '').trim();
+        const sortOrder = (form.querySelector('input[name="sort_order"]')?.value || '').trim() || '1';
+        const isActive = Boolean(form.querySelector('input[name="is_active"]')?.checked);
+        const imgUrl = resolvePreviewImage(form, 'image_file', 'image_url');
+        const badgeBg = group === 'Youth' ? 'bg-sky' : 'bg-gold';
+        const subtitleLine = desc ? `${coach} • ${desc}` : coach;
+
+        return {
+            title: 'Preview Kartu Program Usia',
+            subtitle: `Kelompok ${group} • Urutan #${sortOrder} • ${isActive ? 'Aktif di Beranda' : 'Nonaktif'}`,
+            html: `
+                <div class="flex flex-col items-center">
+                    <p class="mb-3 text-[11px] font-bold uppercase tracking-[1.2px] text-gold">— Tampilan Kartu di Section Program Beranda</p>
+                    <div class="relative h-[440px] w-full max-w-[320px] overflow-hidden rounded-2xl bg-navy-900 shadow-2xl ring-1 ring-white/10">
+                        ${imgUrl ? `<img src="${escapePreviewHtml(imgUrl)}" alt="${escapePreviewHtml(title)}" referrerpolicy="no-referrer" class="absolute inset-0 size-full object-cover">` : ''}
+                        <div class="absolute inset-0" style="background: linear-gradient(0deg, #001428 0%, rgba(0,20,40,.45) 52%, rgba(0,20,40,0) 100%)"></div>
+                        <span class="${badgeBg} absolute left-4 top-4 rounded-full px-3 py-1 font-oswald text-xs font-bold tracking-[1.2px] text-brand">${escapePreviewHtml(ageRange)}</span>
+                        <div class="absolute inset-x-0 bottom-0 p-6">
+                            <h3 class="font-oswald text-2xl font-bold uppercase text-white">${escapePreviewHtml(title)}</h3>
+                            <p class="pt-2 text-sm leading-[1.625] text-white/65">${escapePreviewHtml(subtitleLine)}</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+        };
+    };
+
+    const buildSchedulePreview = (form) => {
+        const day = form.querySelector('select[name="day_of_week"]')?.value || 'Senin';
+        const timeSlot = (form.querySelector('input[name="time_slot"]')?.value || '').trim() || '16:00 – 18:00';
+        const target = (form.querySelector('input[name="target_category"]')?.value || '').trim() || 'Kelompok Usia';
+        const activityType = form.querySelector('select[name="activity_type"]')?.value || 'Grassroot';
+        const coach = (form.querySelector('input[name="coach_name"]')?.value || '').trim() || 'Nama Pelatih';
+        const badgeClass =
+            activityType === 'Grassroot'
+                ? 'bg-gold/20 text-gold'
+                : activityType === 'Youth'
+                  ? 'bg-sky/20 text-sky'
+                  : 'bg-white/15 text-white';
+
+        return {
+            title: 'Preview Jadwal Latihan Mingguan',
+            subtitle: `Tab Hari ${day} • Section Jadwal Beranda`,
+            html: `
+                <div class="space-y-4 rounded-2xl border border-white/10 bg-navy-950 p-5 sm:p-6">
+                    <div class="flex items-center gap-2">
+                        <span class="rounded-xl border border-gold bg-gold px-4 py-2 font-oswald text-sm font-semibold tracking-[.35px] text-brand">${escapePreviewHtml(day)}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-medium uppercase tracking-[1px] text-sky">
+                        <span class="size-2 rounded-full bg-gold"></span>
+                        <span>Jadwal Latihan Hari ${escapePreviewHtml(day)}</span>
+                    </div>
+                    <div class="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-white/[.08] p-5 sm:flex-row sm:items-center">
+                        <div class="min-w-[160px] font-oswald text-lg font-bold text-gold">${escapePreviewHtml(timeSlot)}</div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <p class="font-oswald text-lg font-bold text-white">${escapePreviewHtml(target)}</p>
+                                <span class="rounded-full ${badgeClass} px-2.5 py-0.5 text-xs font-semibold">${escapePreviewHtml(activityType)}</span>
+                            </div>
+                            <p class="pt-1 text-sm font-medium text-white/80">${escapePreviewHtml(coach)}</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+        };
+    };
+
+    const buildFaqPreview = (form) => {
+        const question = (form.querySelector('input[name="question"]')?.value || '').trim() || 'Pertanyaan FAQ belum diisi';
+        const answer = (form.querySelector('textarea[name="answer"]')?.value || '').trim() || 'Jawaban lengkap FAQ akan tampil di sini saat pengunjung membuka pertanyaan.';
+        const sortOrder = String((form.querySelector('input[name="sort_order"]')?.value || '1').trim()).padStart(2, '0');
+        const isActive = Boolean(form.querySelector('input[name="is_active"]')?.checked);
+
+        return {
+            title: 'Preview Item FAQ',
+            subtitle: `Nomor Urutan #${sortOrder} • ${isActive ? 'Ditampilkan di Beranda' : 'Nonaktif'}`,
+            html: `
+                <div class="rounded-2xl border border-white/10 bg-[#001428] p-5 sm:p-7">
+                    <div class="border-y border-white/10">
+                        <div class="flex min-h-[72px] w-full items-center gap-5 py-5 text-left">
+                            <span class="font-oswald text-xs tracking-[1.2px] text-gold">${escapePreviewHtml(sortOrder)}</span>
+                            <span class="flex-1 font-oswald text-lg font-semibold uppercase tracking-[.5px] text-white sm:text-xl">${escapePreviewHtml(question)}</span>
+                            <span class="flex size-10 shrink-0 rotate-45 items-center justify-center rounded-full border border-gold bg-gold text-brand">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3.33v9.33M3.33 8h9.33" stroke="currentColor" stroke-width="1.33" stroke-linecap="round"/></svg>
+                            </span>
+                        </div>
+                        <div class="pb-6 pl-9 pr-4 text-[15px] leading-[26px] text-white/65 sm:pl-10 sm:pr-12">
+                            ${escapePreviewHtml(answer).replace(/\r?\n/g, '<br>')}
+                        </div>
+                    </div>
+                </div>
+            `,
+        };
+    };
+
+    const buildFeePreview = (form) => {
+        const label = (form.querySelector('input[name="label"]')?.value || '').trim() || 'Label Komponen Biaya';
+        const amount = (form.querySelector('input[name="amount_text"]')?.value || '').trim() || 'Rp 0';
+        const feeType = form.querySelector('select[name="fee_type"]')?.value || 'monthly';
+        const sortOrder = (form.querySelector('input[name="sort_order"]')?.value || '').trim() || '1';
+        const isActive = Boolean(form.querySelector('input[name="is_active"]')?.checked);
+        const typeLabel = feeType === 'one_time' ? 'Sekali Bayar (Blok Penuh)' : 'Iuran Bulanan (Grid 2 Kolom)';
+
+        return {
+            title: 'Preview Biaya Pendaftaran',
+            subtitle: `${typeLabel} • Urutan #${sortOrder} • ${isActive ? 'Aktif di Beranda' : 'Nonaktif'}`,
+            html: `
+                <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-brand/90 via-[#002855] to-[#001428] p-6 sm:p-8">
+                    <p class="text-xs font-medium uppercase tracking-[1.2px] text-sky">— Pendaftaran</p>
+                    <h3 class="pt-2 font-oswald text-3xl font-bold uppercase leading-none text-white sm:text-4xl">Bergabung <span class="text-gold">Bersama</span> Kami</h3>
+                    <div class="mt-6 rounded-xl border border-white/10 bg-white/5 p-5">
+                        <p class="text-xs uppercase tracking-[.3px] text-white/45">${escapePreviewHtml(label)}</p>
+                        <p class="pt-1 text-lg font-semibold text-white">${escapePreviewHtml(amount)}</p>
+                    </div>
+                </div>
+            `,
+        };
+    };
+
+    const buildCategoryPreview = (form) => {
+        const name = (form.querySelector('input[name="name"]')?.value || '').trim() || 'Nama Kategori Baru';
+        const slug = slugifyPreview(name) || 'kategori-baru';
+        const badgeColor = getCategoryBadgeClass(slug);
+
+        return {
+            title: 'Preview Kategori Berita',
+            subtitle: `Slug URL otomatis: /berita?kategori=${slug}`,
+            html: `
+                <div class="space-y-5 rounded-2xl border border-white/10 bg-navy-950 p-6">
+                    <div>
+                        <p class="mb-2.5 text-[11px] font-bold uppercase tracking-[1.2px] text-gold">— Tampilan Tombol Filter di Halaman Semua Berita</p>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="inline-flex min-h-9 items-center rounded-full bg-gold px-4 py-2 font-oswald text-xs font-semibold tracking-[0.3px] text-brand">${escapePreviewHtml(name)}</span>
+                            <span class="inline-flex min-h-9 items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 font-oswald text-xs font-semibold tracking-[0.3px] text-white/60">${escapePreviewHtml(name)}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-2.5 text-[11px] font-bold uppercase tracking-[1.2px] text-sky">— Tampilan Badge pada Kartu Berita</p>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <span class="${badgeColor} inline-block rounded-full px-3 py-1 font-oswald text-xs font-bold text-brand">${escapePreviewHtml(name)}</span>
+                            <span class="rounded bg-sky/15 px-2.5 py-1 text-xs font-medium text-sky">${escapePreviewHtml(name)}</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+        };
+    };
+
+    const buildEditorPreview = (form) => {
+        const name = (form.querySelector('input[name="name"]')?.value || '').trim() || 'Nama Editor Baru';
+        const email = (form.querySelector('input[name="email"]')?.value || '').trim() || 'editor@beebold.id';
+        const initials = name.slice(0, 2).toUpperCase();
+
+        return {
+            title: 'Preview Kartu Akun Editor',
+            subtitle: 'Tampilan pada halaman Kelola Editor (Akses Berita & Galeri)',
+            html: `
+                <div class="mx-auto max-w-md rounded-2xl border border-brand/15 bg-white p-5 text-navy-950 shadow-xl">
+                    <div class="flex items-center gap-3.5">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand font-oswald text-base font-bold text-gold">${escapePreviewHtml(initials)}</div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <p class="truncate text-sm font-bold text-navy-950">${escapePreviewHtml(name)}</p>
+                                <span class="shrink-0 rounded-full bg-sky/30 px-2.5 py-0.5 font-oswald text-[10px] font-bold uppercase tracking-wider text-brand">Editor</span>
+                            </div>
+                            <p class="truncate text-xs text-navy-900/60">${escapePreviewHtml(email)}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 rounded-xl bg-[#f4f7fb] p-3 text-xs text-navy-900/70">
+                        Hak Akses: <strong class="text-brand">Berita &amp; Artikel</strong> dan <strong class="text-brand">Galeri Dokumentasi</strong>.
+                    </div>
+                </div>
+            `,
+        };
+    };
+
+    const previewBuilders = {
+        news: buildNewsPreview,
+        gallery: buildGalleryPreview,
+        program: buildProgramPreview,
+        schedule: buildSchedulePreview,
+        faq: buildFaqPreview,
+        fee: buildFeePreview,
+        category: buildCategoryPreview,
+        editor: buildEditorPreview,
+    };
+
+    document.querySelectorAll('[data-preview-trigger]').forEach((triggerBtn) => {
+        triggerBtn.addEventListener('click', () => {
+            const form = triggerBtn.closest('form[data-preview-type]');
+            if (!form) return;
+
+            const type = form.dataset.previewType;
+            const builder = previewBuilders[type];
+            if (!builder) return;
+
+            revokePreviewObjectUrls();
+            const result = builder(form);
+
+            if (dashPreviewTitle) dashPreviewTitle.textContent = result.title;
+            if (dashPreviewSubtitle) dashPreviewSubtitle.textContent = result.subtitle;
+            dashPreviewBody.innerHTML = result.html;
+
+            dashPreviewModal.classList.remove('hidden');
+            dashPreviewModal.classList.add('flex');
+            dashPreviewModal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('overflow-hidden');
+        });
+    });
+
+    dashPreviewModal.querySelectorAll('[data-dash-preview-close]').forEach((closeBtn) => {
+        closeBtn.addEventListener('click', closeDashPreviewModal);
+    });
+
+    dashPreviewModal.addEventListener('click', (event) => {
+        if (event.target === dashPreviewModal) {
+            closeDashPreviewModal();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !dashPreviewModal.classList.contains('hidden')) {
+            closeDashPreviewModal();
+        }
+    });
+}
+
 // 3D Animated Hero Soccer Ball
 import { initHeroBall3D } from './hero-ball-3d.js';
 if (document.readyState === 'loading') {

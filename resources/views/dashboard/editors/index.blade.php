@@ -7,7 +7,7 @@
     <div class="flex flex-col justify-between gap-3 rounded-2xl border border-brand/10 bg-white p-4 shadow-xs sm:flex-row sm:items-center sm:p-5">
         <div>
             <p class="text-sm font-semibold text-brand">Daftar Akun Editor Terdaftar</p>
-            <p class="text-xs text-navy-900/55">Editor memiliki akses ke modul Berita, Kategori Berita, dan Galeri Dokumentasi.</p>
+            <p class="text-xs text-navy-900/55">Editor memiliki akses ke modul Berita dan Galeri Dokumentasi.</p>
         </div>
         <a href="{{ route('dashboard.editors.create') }}" class="inline-flex min-h-10 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-gold px-5 py-2.5 font-oswald text-xs font-bold uppercase tracking-wider text-brand transition hover:brightness-95 sm:w-auto">
             + Tambah Akun Editor

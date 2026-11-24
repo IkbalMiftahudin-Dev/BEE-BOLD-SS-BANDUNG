@@ -13,6 +13,9 @@
     <form method="POST"
           action="{{ $isEdit ? route('dashboard.news.update', $article) : route('dashboard.news.store') }}"
           enctype="multipart/form-data"
+          data-preview-type="news"
+          data-author-name="{{ auth()->user()->name }}"
+          data-existing-image="{{ $isEdit && $article->thumbnail_url ? $article->thumbnail_url : '' }}"
           @if ($isEdit)
               data-edit-form
               data-has-existing-media="{{ $article->thumbnail_path ? 'true' : 'false' }}"
@@ -52,7 +55,7 @@
                     <select name="category_id" required class="mt-1.5 min-h-11 w-full rounded-xl border border-brand/15 bg-[#f4f7fb] px-3.5 py-2.5 text-sm text-navy-950 outline-none focus:border-brand focus:bg-white">
                         <option value="">-- Pilih Kategori --</option>
                         @foreach ($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ (int) old('category_id', $article->category_id) === $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                            <option value="{{ $cat->id }}" data-slug="{{ $cat->slug }}" {{ (int) old('category_id', $article->category_id) === $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -99,9 +102,15 @@
                 </div>
             </div>
 
-            <button type="submit" class="min-h-12 w-full cursor-pointer rounded-xl bg-gold py-3.5 font-oswald text-sm font-bold uppercase tracking-wider text-brand shadow-xs transition hover:brightness-95">
-                {{ $isEdit ? 'Simpan Perubahan Berita' : 'Terbitkan Berita' }}
-            </button>
+            <div class="space-y-2.5">
+                <button type="button" data-preview-trigger class="inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-brand/20 bg-[#eaf2fb] px-5 py-3 font-oswald text-sm font-bold uppercase tracking-wider text-brand transition hover:bg-brand hover:text-white">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    Preview Tampilan
+                </button>
+                <button type="submit" class="min-h-12 w-full cursor-pointer rounded-xl bg-gold py-3.5 font-oswald text-sm font-bold uppercase tracking-wider text-brand shadow-xs transition hover:brightness-95">
+                    {{ $isEdit ? 'Simpan Perubahan Berita' : 'Terbitkan Berita' }}
+                </button>
+            </div>
         </div>
     </form>
 @endsection
